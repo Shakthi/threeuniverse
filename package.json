@@ -1,0 +1,16 @@
+{
+  "name": "threejsuniverse",
+  "version": "1.0.0",
+  "description": "Three js based distributed universe.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "threejs",
+    "universe",
+    "distributed"
+  ],
+  "author": "Shakthi Prasad G S",
+  "license": "ISC"
+}
