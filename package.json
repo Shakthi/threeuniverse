@@ -2,9 +2,10 @@
   "name": "threejsuniverse",
   "version": "1.0.0",
   "description": "Three js based distributed universe.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server"
   },
   "keywords": [
     "threejs",
@@ -12,5 +13,14 @@
     "distributed"
   ],
   "author": "Shakthi Prasad G S",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "4.0.1",
+    "webpack-cli": "2.0.10",
+    "webpack-dev-server": "3.1.0"
+  },
+  "dependencies": {
+    "three": "^0.93.0",
+    "three-pointerlock": "0.0.2"
+  }
 }
