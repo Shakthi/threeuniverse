@@ -3,7 +3,9 @@ const PointerLockControls = require('three-pointerlock');
 import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
-import './loadUnloader'
+//import './loadUnloader'
+import { init as sampleMesh } from './sampleMeshLoad';
+
 var camera, scene, renderer, controls;
 var rendererStats;
 
@@ -226,6 +228,8 @@ function init() {
     scene.add(floor);
 
     // objects
+
+    scene.add(sampleMesh(THREE));
 
     var boxGeometry = new THREE.BoxBufferGeometry(20, 20, 20);
     boxGeometry = boxGeometry.toNonIndexed(); // ensure each face has unique vertices
