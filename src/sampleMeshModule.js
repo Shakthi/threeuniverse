@@ -41,3 +41,4 @@ let init = function (THREE) {
     return mesh;
 }
 
+//Test commit
