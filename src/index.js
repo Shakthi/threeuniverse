@@ -3,8 +3,8 @@ const PointerLockControls = require('three-pointerlock');
 import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
-//import './loadUnloader'
-import { init as sampleMesh } from './sampleMeshLoad';
+import './loadUnloader'
+//import { init as sampleMesh } from './sampleMeshLoad';
 
 var camera, scene, renderer, controls;
 var rendererStats;

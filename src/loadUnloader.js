@@ -34,12 +34,17 @@ class DynamicScriptTag {
 
 }
 
-// let t = new DynamicScriptTag('//code.jquery.com/jquery-2.2.3.js');
-// setTimeout(()=>{
-//     debugger;
-//     t.unload();
 
-// },2000);
+
+
+
+debugger;
+let t = new DynamicScriptTag('https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js');
+setTimeout(()=>{
+    debugger;
+    console.log(t);
+
+},2000);
 
 
 
