@@ -1,9 +1,11 @@
 
-const PointerLockControls= require('three-pointerlock');
-import * as THREE from 'three'
-
-
+const PointerLockControls = require('three-pointerlock');
+import * as THREE from 'three';
+import { datGUI } from './dat';
+import { initVisibilityDesider } from './visibiltyDesider';
+import './loadUnloader'
 var camera, scene, renderer, controls;
+var rendererStats;
 
 var objects = [];
 
@@ -94,8 +96,22 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 
     scene = new THREE.Scene();
+
+
     scene.background = new THREE.Color(0xffffff);
     scene.fog = new THREE.Fog(0xffffff, 0, 750);
+
+    datGUI.add(scene.fog, 'near', 0, 100).name("fog near");
+
+    datGUI.add(scene.fog, 'far', 10, 10000).name("fog far");
+
+
+
+    let camfar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
+    camfar.onChange(value => {
+        camera.updateProjectionMatrix();
+    });
+
 
     var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
     light.position.set(0.5, 1, 0.75);
@@ -247,6 +263,7 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+    initVisibilityDesider(renderer.info)
 
     //
 
