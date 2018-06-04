@@ -5,8 +5,9 @@ import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
 import './loadUnloader'
 //import { init as sampleMesh } from './sampleMeshLoad';
+debugger;
 
-function defineThreeUniverse(contruct){
+window.defineThreeUniverse= function defineThreeUniverse(contruct){
     debugger;
 }
 

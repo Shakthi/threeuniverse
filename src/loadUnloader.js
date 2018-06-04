@@ -10,11 +10,11 @@ function unloadScriptElement(scriptElement){
 
 
 
-// loadScript('https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js').then(element=>{
-//     setTimeout(()=>{
-//         unloadScriptElement(element);
-//     },1000);
-// });
+loadScript('https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js').then(element=>{
+    setTimeout(()=>{
+        unloadScriptElement(element);
+    },1000);
+});
 
 
 
