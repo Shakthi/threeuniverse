@@ -6,6 +6,10 @@ import { initVisibilityDesider } from './visibiltyDesider';
 import './loadUnloader'
 //import { init as sampleMesh } from './sampleMeshLoad';
 
+function defineThreeUniverse(contruct){
+    debugger;
+}
+
 var camera, scene, renderer, controls;
 var rendererStats;
 
@@ -229,7 +233,8 @@ function init() {
 
     // objects
 
-    scene.add(sampleMesh(THREE));
+
+    //scene.add(sampleMesh(THREE));
 
     var boxGeometry = new THREE.BoxBufferGeometry(20, 20, 20);
     boxGeometry = boxGeometry.toNonIndexed(); // ensure each face has unique vertices

@@ -1,6 +1,6 @@
 
 
-let init = function (THREE) {
+defineThreeUniverse( function (THREE) {
 
     var faceIndices = [ 'a', 'b', 'c' ];
 
@@ -39,6 +39,6 @@ let init = function (THREE) {
     mesh.scale.set(0.25,0.25,0.25);
     mesh.position.set(0,100,0);
     return mesh;
-}
+});
 
 //Test commit
