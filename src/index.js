@@ -4,15 +4,15 @@ import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
 import './loadUnloader'
-//import { init as sampleMesh } from './sampleMeshLoad';
-debugger;
 
-window.defineThreeUniverse= function defineThreeUniverse(contruct){
-    debugger;
-}
 
 var camera, scene, renderer, controls;
 var rendererStats;
+
+window.defineThreeUniverse= function defineThreeUniverse(contruct){
+    scene.add(contruct(THREE));
+}
+
 
 var objects = [];
 
