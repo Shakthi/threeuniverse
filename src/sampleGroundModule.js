@@ -2,7 +2,7 @@
 defineThreeUniverse( function (THREE) {
     var loader = new THREE.TextureLoader();
 
-    var groundTexture = loader.load( 'textures/terrain/grasslight-big.jpg' );
+    var groundTexture = loader.load( './grasslight-big.jpg' );
     groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
     groundTexture.repeat.set( 25, 25 );
     groundTexture.anisotropy = 16;
