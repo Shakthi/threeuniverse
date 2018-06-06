@@ -35,7 +35,7 @@ export function loadnExecute(url, initializer, callback) {
             "data-scriptid": `${num}`
         }
     }).then(element => {
-       //console.log(`Loaded ${url}`);
+       console.log(`Loaded ${url}`);
     });
 
 

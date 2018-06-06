@@ -6,19 +6,19 @@ let maping = [
         position: { x: 0, z: 100 },
         radius: 100,
         description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js"
+        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe/sampleMeshModule.js"
     },
     {
         position: { x: 200, z: 500 },
         radius: 10,
         description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js"
+        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe/sampleMeshModule.js"
     },
     {
         position: { x: 0, z: 0 },
         radius: 10000,
-        description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/sampleGroundModule.js"
+        description: "Gras ground with single texture",
+        url: "../../src/universe/grassGround.js"
     }
 
 
@@ -34,7 +34,6 @@ export function loadUniverseAt(position, far, scene) {
 
         if (!loaded.includes(item)) {
             let vectposition = new THREE.Vector3(item.position.x,item.position.y,item.position.z);
-            debugger;
             let distance = vectposition.distanceTo(position);
             if (distance - item.radius < far) {
                 let anchor = new THREE.Object3D();
