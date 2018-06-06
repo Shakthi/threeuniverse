@@ -109,15 +109,15 @@ function init() {
     var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
     light.position.set(0.5, 1, 0.75);
     scene.add(light);
-    controls = initController(camera) 
+    controls = initController(camera)
     scene.add(controls.getObject());
-    
-  
+
+
     raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0), 0, 10);
 
-    
 
-   
+
+
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -153,12 +153,14 @@ function animate() {
 
         var onObject = intersections.length > 0;
 
-        updateController(onObject);
+        if (updateController(onObject)) {
+            updateUniverseAt(controls.getObject().position);
+            renderer.render(scene, camera);
+        }
 
     }
 
-    updateUniverseAt(controls.getObject().position);
-    renderer.render(scene, camera);
+
 
 }
 
@@ -175,7 +177,7 @@ function updateUniverseAt(position) {
         updateUniverseAt.frameCount++;
     } else {
         updateUniverseAt.frameCount = 0;
-        loadUniverseAt(position,camera.far,scene);
+        loadUniverseAt(position, camera.far, scene);
     }
 
 
