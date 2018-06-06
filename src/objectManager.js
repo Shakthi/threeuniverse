@@ -6,19 +6,21 @@ let maping = [
         position: { x: 0, z: 100 },
         radius: 100,
         description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe/sampleMeshModule.js"
+        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
+        
     },
     {
         position: { x: 200, z: 500 },
         radius: 10,
         description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe/sampleMeshModule.js"
+        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
     },
     {
         position: { x: 0, z: 0 },
         radius: 10000,
-        description: "Gras ground with single texture",
-        url: "../../src/universe/grassGround.js"
+        description: "Grass ground with single texture",
+        url: "../../src/universe_parts/grassGround.js",
+        credits:"https://threejs.org/examples/#webgl_animation_cloth"
     }
 
 
