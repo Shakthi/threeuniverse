@@ -38,7 +38,7 @@ defineThreeUniverse( function (THREE) {
     mesh.add(wireframe);
     mesh.scale.set(0.25,0.25,0.25);
     mesh.position.set(0,100,0);
-    return mesh;
+    return Promise.yield(mesh);
 });
 
 //Test commit
