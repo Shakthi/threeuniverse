@@ -3,14 +3,14 @@ import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
 let maping = [
     {
-        position: { x: 0, z: 100 },
+        position: { x: 0, z: -100 },
         radius: 100,
         description: "IcosahedronGeometry",
         url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
 
     },
     {
-        position: { x: 200, z: 500 },
+        position: { x: 200, z: -500 },
         radius: 10,
         description: "IcosahedronGeometry",
         url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
@@ -21,6 +21,13 @@ let maping = [
         description: "Grass ground with single texture",
         url: "../../src/universe_parts/grassGround.js",
         credits: "https://threejs.org/examples/#webgl_animation_cloth"
+    },
+
+    {
+        position: { x: 0, z: -1700,y:-100 },
+        radius: 10000,
+        description: "Grass ground with single texture",
+        url: "../../src/universe_parts/futureGround.js",
     }
 
 
