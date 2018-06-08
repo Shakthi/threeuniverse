@@ -1,43 +1,15 @@
 
 import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
-let maping = [
-    {
-        position: { x: 0, z: -100 },
-        radius: 100,
-        description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
-
-    },
-    {
-        position: { x: 200, z: -500 },
-        radius: 10,
-        description: "IcosahedronGeometry",
-        url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
-    },
-    {
-        position: { x: 0, z: 0 },
-        radius: 10000,
-        description: "Grass ground with single texture",
-        url: "../../src/universe_parts/grassGround.js",
-        credits: "https://threejs.org/examples/#webgl_animation_cloth"
-    },
-
-    {
-        position: { x: 0, z: -1700,y:-100 },
-        radius: 10000,
-        description: "Grass ground with single texture",
-        url: "../../src/universe_parts/futureGround.js",
-    }
-
-
-]
-
+import maping from './mapping';
 
 let loaded = [];
 
 
-export function loadUniverseAt(position, far, scene) {
+
+export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
+
+
 
     maping.forEach(item => {
 
@@ -49,10 +21,19 @@ export function loadUniverseAt(position, far, scene) {
                 anchor.position.copy(vectposition);
 
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
-                    let promise = construct(THREE);
+                    item.disposer = null;
+                    item.options = {
+                        dispose: function (disposer) {
+                            item.disposer = disposer;
+                        }
+                    };
+                    let promise = construct(THREE, item.options);
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);
+                        item.object = anchor;
+                        setNeedToDisplay();
+
                     })
 
 
@@ -69,3 +50,55 @@ export function loadUniverseAt(position, far, scene) {
 
 
 }
+
+export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
+    let unloaded = [];
+    loaded.forEach(item => {
+
+        let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
+        let distance = vectposition.distanceTo(position);
+        if (distance - item.radius > far+100  && item.object) {
+
+            console.log("Unloading ", item.url);
+
+            item.object.parent.remove(item.object);
+            if (item.disposer) {
+                item.disposer();
+            } else {
+                item.object.traverse(function (obj) {
+                    if (obj.isMesh) {
+                        if (obj.geometry)
+                            obj.geometry.dispose();
+                        if (obj.material) {
+                            if (obj.material.map)
+                                obj.material.map.dispose();
+                            obj.material.dispose();
+                        }
+
+                    }
+
+                });
+            }
+            unloaded.push(item);
+        }
+
+
+
+    });
+
+
+    unloaded.forEach((item) => {
+        let i = loaded.indexOf(item);
+        if (i != -1) {
+            loaded.splice(i, 1);
+        }
+
+    })
+
+}
+
+
+//p---fr-----0
+ //   0p-or<f
+
+ //g>f

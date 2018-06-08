@@ -13,7 +13,7 @@ var direction = new THREE.Vector3();
 
 
 var controls;
-export function initController(camera) {
+export function initController(camera, setNeedsToRender) {
 
     controls = new PointerLockControls(camera);
 
@@ -84,10 +84,11 @@ export function initController(camera) {
 
 }
 
-let lastPostion;
+
+let prevPosition = new THREE.Vector3();
+let prevRocation = new THREE.Vector3();
 
 export function updateController(onObject) {
-
 
     var time = performance.now();
     var delta = (time - prevTime) / 1000;
@@ -110,7 +111,7 @@ export function updateController(onObject) {
         canJump = true;
 
     }
-
+    controls.is
     controls.getObject().translateX(velocity.x * delta);
     controls.getObject().translateY(velocity.y * delta);
     controls.getObject().translateZ(velocity.z * delta);
@@ -125,15 +126,29 @@ export function updateController(onObject) {
     }
 
     prevTime = time;
-    let isUpdate=false;
-    if(lastPostion){
-        if (lastPostion.distanceTo(controls.getObject().position)>0.01) {
-            isUpdate = true;
-        }
+    let isUpdate = false;
+    let distace = prevPosition.distanceTo(controls.getObject().position);
+
+    let rotation = new THREE.Vector3().subVectors(new THREE.Vector3(controls.getObject().rotation.x,
+        controls.getObject().rotation.y,
+        controls.getObject().rotation.z),
+        new THREE.Vector3(prevRocation.x,
+            prevRocation.y,
+            prevRocation.z));
+
+    if (distace > Number.EPSILON || Math.abs(rotation.x) > Number.EPSILON
+        || Math.abs(rotation.y) > Number.EPSILON
+        || Math.abs(rotation.z) > Number.EPSILON) {  
+        
+        isUpdate = true;
     }
 
 
-    lastPostion = controls.getObject().position.clone();
+    prevPosition = controls.getObject().position.clone();
+    prevRocation = controls.getObject().rotation.clone();
+
+
+
 
     return isUpdate;
 }

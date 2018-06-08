@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
-import { loadUniverseAt } from './objectManager'
+import { loadUniverseAt,unLoadUniverseAt } from './objectManager'
 import { initController, updateController } from './controller'
 
 
@@ -29,7 +29,7 @@ if (havePointerLock) {
 
         if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
-            controlsEnabled = true;
+            
             controls.enabled = true;
 
             blocker.style.display = 'none';
@@ -83,6 +83,10 @@ var controlsEnabled = false;
 
 init();
 animate();
+var isSetNeedToDisplay = true;
+function setNeedToDisplay() {
+    isSetNeedToDisplay = true;
+}
 
 function init() {
 
@@ -143,8 +147,12 @@ function onWindowResize() {
 function animate() {
 
     requestAnimationFrame(animate);
+    if (isSetNeedToDisplay) {
+        renderer.render(scene, camera);
+        isSetNeedToDisplay = false;
+    }
 
-    if (controlsEnabled === true) {
+    if (controls.enabled === true) {
 
         raycaster.ray.origin.copy(controls.getObject().position);
         raycaster.ray.origin.y -= 10;
@@ -155,7 +163,8 @@ function animate() {
 
         if (updateController(onObject)) {
             updateUniverseAt(controls.getObject().position);
-            renderer.render(scene, camera);
+            setNeedToDisplay();
+
         }
 
     }
@@ -177,9 +186,11 @@ function updateUniverseAt(position) {
         updateUniverseAt.frameCount++;
     } else {
         updateUniverseAt.frameCount = 0;
-        loadUniverseAt(position, camera.far, scene);
+        loadUniverseAt(position, camera.far, scene,setNeedToDisplay);
+        unLoadUniverseAt(position, camera.far, scene,setNeedToDisplay);
     }
 
+    
 
 
 }
