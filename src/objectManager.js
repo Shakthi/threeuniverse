@@ -2,6 +2,7 @@
 import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
 import maping from './mapping';
+import  OBJLoader2  from './extern/OBJLoader2'
 
 let loaded = [];
 
@@ -27,7 +28,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
                             item.disposer = disposer;
                         }
                     };
-                    let promise = construct(THREE, item.options);
+                    let promise = construct(Object.assign({},THREE,{OBJLoader2}), item.options);
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);

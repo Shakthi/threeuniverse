@@ -21,6 +21,13 @@ let maping = [
     },
 
     {
+        position: { x: 0, z: 0 },
+        radius: 10000,
+        url: "../../src/universe_parts/lonetree.js",
+        //credits: "https://threejs.org/examples/#webgl_animation_cloth"
+    },
+
+    {
         position: { x: 0, z: -2700,y:-100 },
         radius: 1000,
         description: "Futeristic ground",

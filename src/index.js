@@ -125,25 +125,7 @@ function init() {
     datGUI.add(scene.fog, 'far', 10, 10000).name("fog far");
     datGUI.close();
 
-    var objLoader = new OBJLoader2();
-    var callbackOnLoad = function (event) {
-        scene.add(event.detail.loaderRootNode);
-        //console.log('Loading complete: ' + event.detail.modelName);
-        //scope._reportProgress({ detail: { text: '' } });
-        event.detail.loaderRootNode.rotateX(- 90 * THREE.Math.DEG2RAD );
-        event.detail.loaderRootNode.scale.set(40,40,40);
-        event.detail.loaderRootNode.position.set(0,-100,0);
-
-    };
-    var onLoadMtl = function (materials) {
-       // objLoader.setModelName(modelName);
-        objLoader.setMaterials(materials);
-        objLoader.setLogging(true, true);
-        objLoader.load('./build/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
-    };
-    objLoader.loadMtl('./build/Tree_obj/Tree.mtl', null, onLoadMtl);
-
-    
+   
 
     let camfar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
     camfar.onChange(value => {
