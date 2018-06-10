@@ -23,7 +23,7 @@ let maping = [
     {
         position: { x: 0, z: -2700,y:-100 },
         radius: 1000,
-        description: "Grass ground with single texture",
+        description: "Futeristic ground",
         url: "../../src/universe_parts/futureGround.js",
     }
 

@@ -3,6 +3,8 @@
  *
  * @author angelxuanchang
  */
+import * as THREE from 'three'
+
 
 let MTLLoader = function ( manager ) {
 
@@ -467,6 +469,8 @@ MTLLoader.MaterialCreator.prototype = {
 
 					break;
 
+					
+
 				case 'tr':
 					n = parseFloat( value );
 
@@ -478,6 +482,14 @@ MTLLoader.MaterialCreator.prototype = {
 						params.transparent = true;
 
 					}
+
+					break;
+
+					case 'alpha':
+					n = parseFloat( value );
+
+						params.alphaTest = n;
+						
 
 					break;
 

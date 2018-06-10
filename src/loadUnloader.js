@@ -51,7 +51,6 @@ export function loadnExecute(url, initializer, callback) {
 
 loadnExecute("https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js",
     "defineThreeUniverse", function (contruct) {
-        //debugger;
         //document.currentScript;
         scene.add(contruct(THREE));
     });

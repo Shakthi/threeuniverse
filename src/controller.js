@@ -6,6 +6,7 @@ var moveBackward = false;
 var moveLeft = false;
 var moveRight = false;
 var canJump = false;
+var nitroBoost = false;
 
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
@@ -29,6 +30,9 @@ export function initController(camera, setNeedsToRender) {
             case 37: // left
             case 65: // a
                 moveLeft = true; break;
+            
+            case 66: // b
+            nitroBoost = true; break;
 
             case 40: // down
             case 83: // s
@@ -73,6 +77,8 @@ export function initController(camera, setNeedsToRender) {
                 moveRight = false;
                 break;
 
+            case 66: // b
+            nitroBoost = false; break;
         }
 
     };
@@ -102,8 +108,14 @@ export function updateController(onObject) {
     direction.x = Number(moveLeft) - Number(moveRight);
     direction.normalize(); // this ensures consistent movements in all directions
 
-    if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-    if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+    let mult = 1000;
+    if (nitroBoost) {
+        mult = 4000;
+    }
+
+
+    if (moveForward || moveBackward) velocity.z -= direction.z * mult * delta;
+    if (moveLeft || moveRight) velocity.x -= direction.x * mult * delta;
 
     if (onObject === true) {
 
@@ -111,7 +123,6 @@ export function updateController(onObject) {
         canJump = true;
 
     }
-    controls.is
     controls.getObject().translateX(velocity.x * delta);
     controls.getObject().translateY(velocity.y * delta);
     controls.getObject().translateZ(velocity.z * delta);

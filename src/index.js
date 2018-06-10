@@ -2,8 +2,10 @@
 import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
-import { loadUniverseAt,unLoadUniverseAt } from './objectManager'
+import { loadUniverseAt, unLoadUniverseAt } from './objectManager'
 import { initController, updateController } from './controller'
+
+import  OBJLoader2  from './extern/OBJLoader2'
 
 
 var camera, scene, renderer, controls;
@@ -29,7 +31,7 @@ if (havePointerLock) {
 
         if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
-            
+
             controls.enabled = true;
 
             blocker.style.display = 'none';
@@ -46,6 +48,8 @@ if (havePointerLock) {
 
     };
 
+
+
     var pointerlockerror = function (event) {
 
         instructions.style.display = '';
@@ -60,6 +64,15 @@ if (havePointerLock) {
     document.addEventListener('pointerlockerror', pointerlockerror, false);
     document.addEventListener('mozpointerlockerror', pointerlockerror, false);
     document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+
+
+    function firsttlock (){
+        element.requestPointerLock();
+        element.removeEventListener('click', firsttlock); 
+    }
+
+    element.addEventListener('click', firsttlock); 
+
 
     instructions.addEventListener('click', function (event) {
 
@@ -88,21 +101,49 @@ function setNeedToDisplay() {
     isSetNeedToDisplay = true;
 }
 
+blocker.style.display = 'none';
+controls.enabled =true;
+
+
 function init() {
 
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+    
+    
+
+    
+
 
     scene = new THREE.Scene();
 
 
     scene.background = new THREE.Color(0xffffff);
-    scene.fog = new THREE.Fog(0xffffff, 0, 750);
+    scene.fog = new THREE.Fog(0xffffff, 500, 1800);
 
     datGUI.add(scene.fog, 'near', 0, 100).name("fog near");
 
     datGUI.add(scene.fog, 'far', 10, 10000).name("fog far");
+    datGUI.close();
 
+    var objLoader = new OBJLoader2();
+    var callbackOnLoad = function (event) {
+        scene.add(event.detail.loaderRootNode);
+        //console.log('Loading complete: ' + event.detail.modelName);
+        //scope._reportProgress({ detail: { text: '' } });
+        event.detail.loaderRootNode.rotateX(- 90 * THREE.Math.DEG2RAD );
+        event.detail.loaderRootNode.scale.set(40,40,40);
+        event.detail.loaderRootNode.position.set(0,-100,0);
 
+    };
+    var onLoadMtl = function (materials) {
+       // objLoader.setModelName(modelName);
+        objLoader.setMaterials(materials);
+        objLoader.setLogging(true, true);
+        objLoader.load('./build/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
+    };
+    objLoader.loadMtl('./build/Tree_obj/Tree.mtl', null, onLoadMtl);
+
+    
 
     let camfar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
     camfar.onChange(value => {
@@ -115,15 +156,29 @@ function init() {
     scene.add(light);
     controls = initController(camera)
     scene.add(controls.getObject());
+    let storeditem =localStorage.getItem("lastCameraPosition");
+    if (storeditem) {
+        let obj = JSON.parse(storeditem);
+        controls.getObject().position.set(obj.x,obj.y,obj.z);
+    }
 
+    let dirlight = new THREE.DirectionalLight(0xffffff, 0.6);
+    scene.add(dirlight);
+    dirlight.target.position.set(1,0,0.5);
+    dirlight.target.updateMatrixWorld();
+    var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+    scene.add( light );
 
-    raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0), 0, 10);
+    //raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, - 1, 0), 0, 10);
 
 
 
 
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
@@ -154,14 +209,14 @@ function animate() {
 
     if (controls.enabled === true) {
 
-        raycaster.ray.origin.copy(controls.getObject().position);
-        raycaster.ray.origin.y -= 10;
+        // raycaster.ray.origin.copy(controls.getObject().position);
+        // raycaster.ray.origin.y -= 10;
 
-        var intersections = raycaster.intersectObjects(objects);
+        // var intersections = raycaster.intersectObjects(objects);
 
-        var onObject = intersections.length > 0;
+        //var onObject = intersections.length > 0;
 
-        if (updateController(onObject)) {
+        if (updateController(false)) {
             updateUniverseAt(controls.getObject().position);
             setNeedToDisplay();
 
@@ -186,11 +241,13 @@ function updateUniverseAt(position) {
         updateUniverseAt.frameCount++;
     } else {
         updateUniverseAt.frameCount = 0;
-        loadUniverseAt(position, camera.far, scene,setNeedToDisplay);
-        unLoadUniverseAt(position, camera.far, scene,setNeedToDisplay);
+        loadUniverseAt(position, camera.far, scene, setNeedToDisplay);
+        unLoadUniverseAt(position, camera.far, scene, setNeedToDisplay);
+
+        localStorage.setItem("lastCameraPosition", JSON.stringify(controls.getObject().position));
     }
 
-    
+
 
 
 }

@@ -187,7 +187,7 @@ let OBJLoader2 = (function () {
 			output += '\nurl: ' + event.currentTarget.responseURL + '\nstatus: ' + event.currentTarget.statusText;
 
 		}
-		this.onProgress( 'error', output, -1 );
+		//this.onProgress( 'error', output, -1 );
 		throw output;
 	};
 
