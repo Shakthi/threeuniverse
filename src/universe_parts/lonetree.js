@@ -10,7 +10,6 @@ defineThreeUniverse(function (THREE) {
             //scope._reportProgress({ detail: { text: '' } });
             event.detail.loaderRootNode.rotateX(- 90 * THREE.Math.DEG2RAD);
             event.detail.loaderRootNode.scale.set(40, 40, 40);
-            event.detail.loaderRootNode.position.set(0, -100, 0);
 
             event.detail.loaderRootNode.traverse(object => {
                 if (object.isMesh) {

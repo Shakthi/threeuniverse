@@ -109,7 +109,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
     
-    
+    camera.position.set(0,100,0);
 
     
 
@@ -117,8 +117,8 @@ function init() {
     scene = new THREE.Scene();
 
 
-    scene.background = new THREE.Color(0xffffff);
-    scene.fog = new THREE.Fog(0xffffff, 500, 1800);
+    scene.background = new THREE.Color( 0xcce0ff);
+    scene.fog = new THREE.Fog( 0xcce0ff, 500, 1800);
 
     datGUI.add(scene.fog, 'near', 0, 100).name("fog near");
 
@@ -133,9 +133,9 @@ function init() {
     });
 
 
-    var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
-    light.position.set(0.5, 1, 0.75);
-    scene.add(light);
+    // var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+    // light.position.set(0.5, 1, 0.75);
+    // scene.add(light);
     controls = initController(camera)
     scene.add(controls.getObject());
     let storeditem =localStorage.getItem("lastCameraPosition");
@@ -144,10 +144,7 @@ function init() {
         controls.getObject().position.set(obj.x,obj.y,obj.z);
     }
 
-    let dirlight = new THREE.DirectionalLight(0xffffff, 0.6);
-    scene.add(dirlight);
-    dirlight.target.position.set(1,0,0.5);
-    dirlight.target.updateMatrixWorld();
+    
     var light = new THREE.AmbientLight( 0x404040 ); // soft white light
     scene.add( light );
 

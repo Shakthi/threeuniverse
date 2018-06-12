@@ -3,6 +3,10 @@ import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
 import maping from './mapping';
 import  OBJLoader2  from './extern/OBJLoader2'
+import seedrandom from 'seedrandom'
+
+let THREEEX = Object.assign({},THREE,{OBJLoader2,seedrandom});
+
 
 let loaded = [];
 
@@ -28,7 +32,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
                             item.disposer = disposer;
                         }
                     };
-                    let promise = construct(Object.assign({},THREE,{OBJLoader2}), item.options);
+                    let promise = construct(THREEEX, item.options);
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);

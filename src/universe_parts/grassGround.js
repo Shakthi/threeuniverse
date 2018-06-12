@@ -19,7 +19,7 @@ defineThreeUniverse(function (THREE) {
 
         var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000), groundMaterial);
         // mesh.position.y = - 250;
-        mesh.position.y = - 100;
+       // mesh.position.y = - 100;
         mesh.rotation.x = - Math.PI / 2;
         mesh.receiveShadow = true;
 
