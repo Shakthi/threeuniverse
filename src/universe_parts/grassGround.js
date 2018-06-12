@@ -6,7 +6,7 @@ defineThreeUniverse(function (THREE) {
         var loader = new THREE.TextureLoader();
         var mesh = null;
 
-        var groundTexture = loader.load('./../build/grasslight-big.jpg',
+        var groundTexture = loader.load('resource/grasslight-big.jpg',
             () => {resolve(mesh)},
             null,
             (error) => {reject(error)}

@@ -25,10 +25,10 @@ defineThreeUniverse(function (THREE) {
             // objLoader.setModelName(modelName);
             objLoader.setMaterials(materials);
             objLoader.setLogging(true, true);
-            objLoader.load('./build/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
+            objLoader.load('resource/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
 
 
         };
-        objLoader.loadMtl('./build/Tree_obj/Tree.mtl', null, onLoadMtl);
+        objLoader.loadMtl('resource/Tree_obj/Tree.mtl', null, onLoadMtl);
     });
 });
