@@ -28,7 +28,8 @@ let maping = [
     {
         position: { x: 100, z: 100 },
         radius: 10000,
-        url: "src/universe_parts/forest.js",
+        
+        url: "https://shakthi.github.io/PartUniverse/src/universe_parts/smallforest.js",
     },
     {
         position: { x: 0, z: 0 },
