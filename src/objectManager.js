@@ -24,13 +24,15 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
             if (distance - item.radius < far) {
                 let anchor = new THREE.Object3D();
                 anchor.position.copy(vectposition);
-
+                let baseUrl= item.url.substring(0,item.url.indexOf("src/universe_parts"));
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                     item.disposer = null;
                     item.options = {
                         dispose: function (disposer) {
                             item.disposer = disposer;
-                        }
+                        },
+                        baseUrl:baseUrl,
+
                     };
                     let promise = construct(THREEEX, item.options);
                     promise.then((result) => {

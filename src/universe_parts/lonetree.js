@@ -1,5 +1,5 @@
 
-defineThreeUniverse(function (THREE) {
+defineThreeUniverse(function (THREE,options) {
 
     return new Promise(function (resolve, reject) {
 
@@ -25,10 +25,10 @@ defineThreeUniverse(function (THREE) {
             // objLoader.setModelName(modelName);
             objLoader.setMaterials(materials);
             objLoader.setLogging(true, true);
-            objLoader.load('resource/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
+            objLoader.load(options.baseUrl+'resource/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
 
 
         };
-        objLoader.loadMtl('resource/Tree_obj/Tree.mtl', null, onLoadMtl);
+        objLoader.loadMtl(options.baseUrl+'resource/Tree_obj/Tree.mtl', null, onLoadMtl);
     });
 });
