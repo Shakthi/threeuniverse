@@ -1,18 +1,25 @@
 
 import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
-import maping from './mapping';
 import  OBJLoader2  from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 
 let THREEEX = Object.assign({},THREE,{OBJLoader2,seedrandom});
 
-
+let maping = null;
 let loaded = [];
 
+loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
+    construct().then(lmap=>{
+         maping = lmap;
+    });
 
+});
 
 export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
+
+    if(maping == null)
+        return;
 
 
 

@@ -1,3 +1,6 @@
+defineThreeUniverse(function () {
+
+
 let maping = [
     {
         position: { x: 0, z: -100 },
@@ -47,4 +50,6 @@ let maping = [
 
 ];
 
-export default maping;
+return Promise.resolve(maping);
+
+})
