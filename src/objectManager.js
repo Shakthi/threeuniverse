@@ -1,64 +1,77 @@
 
 import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
-import  OBJLoader2  from './extern/OBJLoader2'
+import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 
-let THREEEX = Object.assign({},THREE,{OBJLoader2,seedrandom});
+let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });
 
 let maping = null;
 let loaded = [];
 
-loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
-    construct().then(lmap=>{
-         maping = lmap;
-    });
+function getMaping() {
+    return new Promise(function (resolve) {
 
-});
-
-export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
-
-    if(maping == null)
-        return;
-
-
-
-    maping.forEach(item => {
-
-        if (!loaded.includes(item)) {
-            let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
-            let distance = vectposition.distanceTo(position);
-            if (distance - item.radius < far) {
-                let anchor = new THREE.Object3D();
-                anchor.position.copy(vectposition);
-                let baseUrl= item.url.substring(0,item.url.indexOf("src/universe_parts"));
-                loadnExecute(item.url, "defineThreeUniverse", (construct) => {
-                    item.disposer = null;
-                    item.options = {
-                        dispose: function (disposer) {
-                            item.disposer = disposer;
-                        },
-                        baseUrl:baseUrl,
-
-                    };
-                    let promise = construct(THREEEX, item.options);
-                    promise.then((result) => {
-                        anchor.add(result);
-                        scene.add(anchor);
-                        item.object = anchor;
-                        setNeedToDisplay();
-
-                    })
-
-
+        if (maping == null) {
+            maping = [];
+            loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
+                return construct().then(lmap => {
+                    maping = lmap;
+                    resolve(maping);
                 });
-
-                loaded.push(item);
-
-            }
+            });
+        }
+        else {
+            resolve(maping);
         }
 
 
+    });
+}
+
+
+var status = ''
+
+export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
+
+    getMaping().then((maping) => {
+        maping.forEach(item => {
+
+            if (!loaded.includes(item)) {
+                let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
+                let distance = vectposition.distanceTo(position);
+                if (distance - item.radius < far) {
+                    let anchor = new THREE.Object3D();
+                    anchor.position.copy(vectposition);
+                    let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
+                    loadnExecute(item.url, "defineThreeUniverse", (construct) => {
+                        item.disposer = null;
+                        item.options = {
+                            dispose: function (disposer) {
+                                item.disposer = disposer;
+                            },
+                            baseUrl: baseUrl,
+
+                        };
+                        let promise = construct(THREEEX, item.options);
+                        promise.then((result) => {
+                            anchor.add(result);
+                            scene.add(anchor);
+                            item.object = anchor;
+                            setNeedToDisplay();
+
+                        })
+
+
+                    });
+
+                    loaded.push(item);
+
+                }
+            }
+
+
+        });
     });
 
 
@@ -71,7 +84,7 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
 
         let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
         let distance = vectposition.distanceTo(position);
-        if (distance - item.radius > far+100  && item.object) {
+        if (distance - item.radius > far + 100 && item.object) {
 
             console.log("Unloading ", item.url);
 
