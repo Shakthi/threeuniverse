@@ -22,6 +22,7 @@
   "dependencies": {
     "dat.gui": "^0.7.2",
     "seedrandom": "^2.4.3",
+    "set-location-hash": "^0.3.0",
     "simple-load-script": "^1.0.2",
     "three": "^0.93.0",
     "three-pointerlock": "0.0.2"
