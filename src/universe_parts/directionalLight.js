@@ -1,5 +1,5 @@
 
-defineThreeUniverse(function (THREE) {
+defineThreeUniverse(function (THREE,options) {
 
     return new Promise(function (resolve, reject) {
 
@@ -14,11 +14,17 @@ defineThreeUniverse(function (THREE) {
     light.shadow.mapSize.height = 512; // default
     light.shadow.camera.near = 0.5;    // default
     light.shadow.camera.far = 500;     // default
-    light.shadow.camera.left = light.shadow.camera.bottom = -500;
-    light.shadow.camera.top = light.shadow.camera.right =500;
-    //Create a helper for the shadow camera (optional)
-// var helper = new THREE.CameraHelper( light.shadow.camera );
-// light.add( helper );
+    light.shadow.camera.left = light.shadow.camera.bottom = -800;
+    light.shadow.camera.top = light.shadow.camera.right =800;
+    light.add(light.target);
+    light.target.position.set(-50,-200,0);
+
+    if (options.onCameraUpdate) {
+        options.onCameraUpdate((position)=>{
+            light.position.set(position.x+50, 200,position.z+ 0);
+        })
+    }    
+
     resolve(light);
 
     });
