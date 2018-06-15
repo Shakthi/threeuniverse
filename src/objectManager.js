@@ -7,8 +7,8 @@ import seedrandom from 'seedrandom'
 let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });
 
 let maping = null;
-let loaded = [];
-
+let loadedParts = [];
+let local_part = "";
 function getMaping() {
     return new Promise(function (resolve) {
 
@@ -16,7 +16,8 @@ function getMaping() {
             maping = [];
             loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
                 return construct().then(lmap => {
-                    maping = lmap;
+                    maping = lmap.maping;
+                    local_part = lmap.local_part;
                     resolve(maping);
                 });
             });
@@ -37,23 +38,31 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
     getMaping().then((maping) => {
         maping.forEach(item => {
 
-            if (!loaded.includes(item)) {
+            if (!loadedParts.includes(item)) {
                 let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
                 let distance = vectposition.distanceTo(position);
                 if (distance - item.radius < far) {
                     let anchor = new THREE.Object3D();
                     anchor.position.copy(vectposition);
                     let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
+                    if (baseUrl == local_part) {
+                        item.url = item.url.substring(local_part.length);
+                    }
                     loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                         item.disposer = null;
-                        item.options = {
+                        let options = {
                             dispose: function (disposer) {
                                 item.disposer = disposer;
                             },
+                            onCameraUpdate: function (fun) {
+                                item.onCameraUpdate = fun;
+                            },
                             baseUrl: baseUrl,
-
                         };
-                        let promise = construct(THREEEX, item.options);
+
+
+
+                        let promise = construct(THREEEX, options);
                         promise.then((result) => {
                             anchor.add(result);
                             scene.add(anchor);
@@ -65,7 +74,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
 
                     });
 
-                    loaded.push(item);
+                    loadedParts.push(item);
 
                 }
             }
@@ -80,7 +89,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
 
 export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
     let unloaded = [];
-    loaded.forEach(item => {
+    loadedParts.forEach(item => {
 
         let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
         let distance = vectposition.distanceTo(position);
@@ -115,15 +124,22 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
 
 
     unloaded.forEach((item) => {
-        let i = loaded.indexOf(item);
+        let i = loadedParts.indexOf(item);
         if (i != -1) {
-            loaded.splice(i, 1);
+            loadedParts.splice(i, 1);
         }
 
     })
 
 }
 
+export function updateloadedParts(position) {
+    for (let i = loadedParts.length - 1; i > -1; i--) {
+        if (loadedParts[i].onCameraUpdate) {
+            loadedParts[i].onCameraUpdate(position);
+        }
+    }
+}
 
 //p---fr-----0
  //   0p-or<f
