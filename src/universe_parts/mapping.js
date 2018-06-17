@@ -52,7 +52,7 @@ defineThreeUniverse(function () {
             position: { x: 542, z: -2700, y: -582 },
             radius: 1000,
             description: "Simple cube ground",
-            url: "https://ashwithags.github.io/ThreeJSUniverse/src/universe_parts/futureGround.js",
+            url: "https://ashwithags.github.io/ThreeJSUniverse/src/universe_parts/simpleCube.js",
         }
 
 
