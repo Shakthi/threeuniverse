@@ -9,78 +9,77 @@ let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });
 let maping = null;
 let loadedParts = [];
 let local_part = "";
-function getMaping() {
+
+export function initMaping() {
     return new Promise(function (resolve) {
+        loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
+            return construct().then(lmap => {
+                maping = lmap.maping;
+                local_part = lmap.local_part;
+                let localPartItems = maping.filter(item=>item.url.startsWith(local_part));
+                
+                if (localPartItems.length) {
+                    lmap.local_position = localPartItems[0].position;
+                }
+                
 
-        if (maping == null) {
-            maping = [];
-            loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
-                return construct().then(lmap => {
-                    maping = lmap.maping;
-                    local_part = lmap.local_part;
-                    resolve(maping);
-                });
+                resolve(lmap);
             });
-        }
-        else {
-            resolve(maping);
-        }
-
-
+        });
     });
 }
+
+
 
 
 var status = ''
 
 export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
 
-    getMaping().then((maping) => {
-        maping.forEach(item => {
+    maping.forEach(item => {
 
-            if (!loadedParts.includes(item)) {
-                let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
-                let distance = vectposition.distanceTo(position);
-                if (distance - item.radius < far) {
-                    let anchor = new THREE.Object3D();
-                    anchor.position.copy(vectposition);
-                    let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
-                    if (baseUrl == local_part) {
-                        item.url = item.url.substring(local_part.length);
-                    }
-                    loadnExecute(item.url, "defineThreeUniverse", (construct) => {
-                        item.disposer = null;
-                        let options = {
-                            dispose: function (disposer) {
-                                item.disposer = disposer;
-                            },
-                            onCameraUpdate: function (fun) {
-                                item.onCameraUpdate = fun;
-                            },
-                            baseUrl: baseUrl,
-                        };
-
-
-
-                        let promise = construct(THREEEX, options);
-                        promise.then((result) => {
-                            anchor.add(result);
-                            scene.add(anchor);
-                            item.object = anchor;
-                            setNeedToDisplay();
-
-                        })
-
-
-                    });
-
-                    loadedParts.push(item);
-
+        if (!loadedParts.includes(item)) {
+            let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
+            let distance = vectposition.distanceTo(position);
+            if (distance - item.radius < far) {
+                let anchor = new THREE.Object3D();
+                anchor.position.copy(vectposition);
+                let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
+                if (baseUrl == local_part) {
+                    item.url = item.url.substring(local_part.length);
                 }
+                loadnExecute(item.url, "defineThreeUniverse", (construct) => {
+                    item.disposer = null;
+                    let options = {
+                        dispose: function (disposer) {
+                            item.disposer = disposer;
+                        },
+                        onCameraUpdate: function (fun) {
+                            item.onCameraUpdate = fun;
+                        },
+                        baseUrl: baseUrl,
+                    };
+
+
+
+                    let promise = construct(THREEEX, options);
+                    promise.then((result) => {
+                        anchor.add(result);
+                        scene.add(anchor);
+                        item.object = anchor;
+                        setNeedToDisplay();
+
+                    })
+
+
+                });
+
+                loadedParts.push(item);
+
             }
+        }
 
 
-        });
     });
 
 

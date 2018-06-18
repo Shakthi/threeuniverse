@@ -1,7 +1,7 @@
 
 defineThreeUniverse(function (THREE,options) {
 
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
 
         var objLoader = new THREE.OBJLoader2();
         var callbackOnLoad = function (event) {
@@ -17,7 +17,7 @@ defineThreeUniverse(function (THREE,options) {
                 }
 
             })
-
+            
             resolve(event.detail.loaderRootNode);
 
         };

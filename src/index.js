@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
-import { loadUniverseAt, unLoadUniverseAt, updateloadedParts } from './objectManager'
+import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
 import { initController, updateController } from './controller'
 import setLocationHash from 'set-location-hash';
 
@@ -10,12 +10,7 @@ import setLocationHash from 'set-location-hash';
 
 
 var camera, scene, renderer, controls;
-var rendererStats;
 
-
-var objects = [];
-
-var raycaster;
 
 var blocker = document.getElementById('blocker');
 var instructions = document.getElementById('instructions');
@@ -96,7 +91,19 @@ var controlsEnabled = false;
 
 
 init();
-animate();
+initMaping().then(lmap => {
+    debugger;
+    let local_position = lmap.local_position;
+    var hashobject = getHashObject();
+    if (!hashobject && local_position) {
+        hashobject = local_position;
+        controls.getObject().position.set(local_position.x, local_position.y, local_position.z);
+    }
+    animate();
+
+
+})
+
 var isSetNeedToDisplay = true;
 function setNeedToDisplay() {
     isSetNeedToDisplay = true;
@@ -104,6 +111,22 @@ function setNeedToDisplay() {
 
 blocker.style.display = 'none';
 controls.enabled = true;
+
+
+function getHashObject() {
+    let hashParam = window.location.hash.substr(1).split('&');
+    let hashParamObject = {};
+    hashParam.forEach(item => {
+        let splitted = item.split(':')
+        hashParamObject[splitted[0]] = splitted[1];
+    })
+
+    if (hashParam.length <= 1) {
+        return null;
+    }
+
+    return hashParamObject;
+}
 
 
 function init() {
@@ -152,14 +175,10 @@ function init() {
     //     controls.getObject().rotation.set(obj._x,obj._y,obj._z);
     // }
 
-    let hashParam = window.location.hash.substr(1).split('&');
-    let hashParamObject = {};
-    hashParam.forEach(item => {
-        let splitted = item.split(':')
-        hashParamObject[splitted[0]] = splitted[1];
-    })
 
-    if (hashParamObject.x) {
+    let hashParamObject = getHashObject();
+
+    if (hashParamObject) {
         controls.getObject().position.set(Number(hashParamObject.x),
             0, Number(hashParamObject.z));
     }
@@ -186,13 +205,13 @@ function onWindowResize() {
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    setNeedToDisplay();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 
 }
 
 function animate() {
-
     requestAnimationFrame(animate);
     if (isSetNeedToDisplay) {
         renderer.render(scene, camera);
@@ -201,9 +220,6 @@ function animate() {
     }
 
     if (controls.enabled === true) {
-
-        
-
         if (updateController(false)) {
             updateUniverseAt(controls.getObject().position);
             setNeedToDisplay();
@@ -212,8 +228,6 @@ function animate() {
 
     }
 
-
-
 }
 
 
@@ -221,22 +235,31 @@ function animate() {
 
 function updateUniverseAt(position) {
     if (!updateUniverseAt.frameCount) {
-        updateUniverseAt.count = 0;
+        updateUniverseAt.frameCount = 0;
+    }
+    if (updateUniverseAt.frameCount == 0) {
+        loadUniverseAt(position, camera.far, scene, setNeedToDisplay);
+        unLoadUniverseAt(position, camera.far, scene, setNeedToDisplay);
+
+    }
+
+
+
+
+    if (updateUniverseAt.frameCount == 59) {
+        localStorage.setItem("lastCameraPosition", JSON.stringify(position.position));
+        localStorage.setItem("lastCameraRotation", JSON.stringify(controls.getObject().rotation));
+
+        setLocationHash(`x:${controls.getObject().position.x.toFixed(0)}&z:${controls.getObject().position.z.toFixed(0)}`,
+            { replace: true });
     }
 
 
     if (updateUniverseAt.frameCount < 60) {
         updateUniverseAt.frameCount++;
     } else {
+
         updateUniverseAt.frameCount = 0;
-        loadUniverseAt(position, camera.far, scene, setNeedToDisplay);
-        unLoadUniverseAt(position, camera.far, scene, setNeedToDisplay);
-        localStorage.setItem("lastCameraPosition", JSON.stringify(position.position));
-        localStorage.setItem("lastCameraRotation", JSON.stringify(controls.getObject().rotation));
-
-        setLocationHash(`x:${controls.getObject().position.x.toFixed(0)}&z:${controls.getObject().position.z.toFixed(0)}`, { replace: true });
-
-
     }
 
 
