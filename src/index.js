@@ -92,13 +92,12 @@ var controlsEnabled = false;
 
 init();
 initMaping().then(lmap => {
-    debugger;
     let local_position = lmap.local_position;
     var hashobject = getHashObject();
-    if (!hashobject && local_position) {
-        hashobject = local_position;
-        controls.getObject().position.set(local_position.x, local_position.y, local_position.z);
-    }
+    // if (!hashobject && local_position) {
+    //     hashobject = local_position;
+    //     controls.getObject().position.set(local_position.x, local_position.y, local_position.z);
+    // }
     animate();
 
 
