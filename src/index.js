@@ -15,89 +15,119 @@ var camera, scene, renderer, controls;
 var blocker = document.getElementById('blocker');
 var instructions = document.getElementById('instructions');
 
-// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+//(function () {
+    // http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
-var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+    var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
-if (havePointerLock) {
+    if (havePointerLock) {
 
-    var element = document.body;
+        var element = document.body;
 
-    var pointerlockchange = function (event) {
+        var pointerlockchange = function (event) {
 
-        if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
 
-            controls.enabled = true;
+                controls.enabled = true;
 
-            blocker.style.display = 'none';
+                blocker.style.display = 'none';
 
-        } else {
+            } else {
 
-            controls.enabled = false;
+                controls.enabled = false;
 
-            blocker.style.display = 'block';
+                blocker.style.display = 'block';
+
+                instructions.style.display = '';
+
+            }
+
+        };
+
+
+
+        var pointerlockerror = function (event) {
 
             instructions.style.display = '';
 
+        };
+
+        // Hook pointer lock state change events
+        document.addEventListener('pointerlockchange', pointerlockchange, false);
+        document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+        document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+
+        document.addEventListener('pointerlockerror', pointerlockerror, false);
+        document.addEventListener('mozpointerlockerror', pointerlockerror, false);
+        document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+
+
+        function firsttlock() {
+            element.requestPointerLock();
+            element.removeEventListener('click', firsttlock);
         }
 
-    };
+        element.addEventListener('click', firsttlock);
 
 
+        instructions.addEventListener('click', function (event) {
 
-    var pointerlockerror = function (event) {
+            instructions.style.display = 'none';
 
-        instructions.style.display = '';
+            // Ask the browser to lock the pointer
+            element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+            element.requestPointerLock();
 
-    };
+        }, false);
 
-    // Hook pointer lock state change events
-    document.addEventListener('pointerlockchange', pointerlockchange, false);
-    document.addEventListener('mozpointerlockchange', pointerlockchange, false);
-    document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+    } else {
 
-    document.addEventListener('pointerlockerror', pointerlockerror, false);
-    document.addEventListener('mozpointerlockerror', pointerlockerror, false);
-    document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+        instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
-
-    function firsttlock() {
-        element.requestPointerLock();
-        element.removeEventListener('click', firsttlock);
     }
 
-    element.addEventListener('click', firsttlock);
-
-
-    instructions.addEventListener('click', function (event) {
-
-        instructions.style.display = 'none';
-
-        // Ask the browser to lock the pointer
-        element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-        element.requestPointerLock();
-
-    }, false);
-
-} else {
-
-    instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
-
-}
-
-var controlsEnabled = false;
+//})();
 
 
 
-init();
+
+
+
 initMaping().then(lmap => {
-    let local_position = lmap.local_position;
-    var hashobject = getHashObject();
-    // if (!hashobject && local_position) {
-    //     hashobject = local_position;
-    //     controls.getObject().position.set(local_position.x, local_position.y, local_position.z);
-    // }
+    let initialPosition = new THREE.Vector3();
+    let offset = new THREE.Vector3(0, 100, 0);
+
+    let urlHashPosition = getHashObject();
+
+    if (urlHashPosition) {
+        initialPosition.set(offset.x + urlHashPosition.x, offset.y + urlHashPosition.y, offset.z + urlHashPosition.z);
+    } else {
+
+        let lastCameraPosition = localStorage.getItem("lastCameraPosition");
+        if (lastCameraPosition && lastCameraPosition !== "undefined") {
+            let obj = JSON.parse(lastCameraPosition);
+            initialPosition.set(offset.x + obj.x, offset.y + obj.y, offset.z + obj.z);
+        } else {
+            let local_position = lmap.local_position;
+            ['x', 'y', 'z'].forEach(key => {
+                if (local_position[key])
+                    local_position[key] = Number(local_position[key]);
+                else
+                    local_position[key] = 0;
+
+            });
+
+            if (local_position) {
+                initialPosition.set(offset.x + local_position.x, offset.y + local_position.y, offset.z + local_position.z);
+            }
+
+
+
+        }
+
+    }
+    init(initialPosition);
     animate();
 
 
@@ -109,7 +139,6 @@ function setNeedToDisplay() {
 }
 
 blocker.style.display = 'none';
-controls.enabled = true;
 
 
 function getHashObject() {
@@ -124,16 +153,27 @@ function getHashObject() {
         return null;
     }
 
+    function setVal(pr) {
+        if (hashParamObject[pr])
+            hashParamObject[pr] = Number(hashParamObject[pr]);
+        else
+            hashParamObject[pr] = 0;
+    }
+
+    setVal('x');
+    setVal('y');
+    setVal('z');
+    ;
+
     return hashParamObject;
 }
 
 
-function init() {
+function init(position) {
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
 
-    camera.position.set(0, 100, 0);
-
+    camera.position.copy(position);
 
 
 
@@ -162,11 +202,6 @@ function init() {
     controls = initController(camera)
     scene.add(controls.getObject());
 
-    let lastCameraPosition = localStorage.getItem("lastCameraPosition");
-    if (lastCameraPosition && lastCameraPosition !== "undefined") {
-        let obj = JSON.parse(lastCameraPosition);
-        controls.getObject().position.set(obj.x, obj.y, obj.z);
-    }
 
     // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
     // if (lastCameraRotation) {
@@ -175,12 +210,6 @@ function init() {
     // }
 
 
-    let hashParamObject = getHashObject();
-
-    if (hashParamObject) {
-        controls.getObject().position.set(Number(hashParamObject.x),
-            0, Number(hashParamObject.z));
-    }
     var light = new THREE.AmbientLight(0x404040); // soft white light
     scene.add(light);
 
@@ -197,6 +226,7 @@ function init() {
     //
 
     window.addEventListener('resize', onWindowResize, false);
+    controls.enabled = true;
 
 }
 
@@ -246,7 +276,7 @@ function updateUniverseAt(position) {
 
 
     if (updateUniverseAt.frameCount == 59) {
-        localStorage.setItem("lastCameraPosition", JSON.stringify(position.position));
+        localStorage.setItem("lastCameraPosition", JSON.stringify(position));
         localStorage.setItem("lastCameraRotation", JSON.stringify(controls.getObject().rotation));
 
         setLocationHash(`x:${controls.getObject().position.x.toFixed(0)}&z:${controls.getObject().position.z.toFixed(0)}`,
