@@ -61,7 +61,9 @@ function setNeedToDisplay() {
     isSetNeedToDisplay = true;
 }
 
-blocker.style.display = 'none';
+var firstFrame = true;
+
+//blocker.style.display = 'none';
 
 
 function getHashObject() {
@@ -150,7 +152,7 @@ function init(position) {
     //
 
     window.addEventListener('resize', onWindowResize, false);
-    controls.enabled = true;
+    //controls.enabled = true;
 
 }
 
@@ -172,12 +174,13 @@ function animate() {
         updateloadedParts(controls.getObject().position);
     }
 
-    if (controls.enabled === true) {
+    if (controls.enabled === true || firstFrame) {
         if (updateController(false)) {
             updateUniverseAt(controls.getObject().position);
             setNeedToDisplay();
-
         }
+
+        firstFrame = false;
 
     }
 
