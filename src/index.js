@@ -173,7 +173,6 @@ function init(position) {
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
 
-    camera.position.copy(position);
 
 
 
@@ -203,6 +202,9 @@ function init(position) {
     scene.add(controls.getObject());
 
 
+    camera.position.y = 100;
+    controls.getObject().translateX(position.x);
+    controls.getObject().translateZ(position.z);
     // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
     // if (lastCameraRotation) {
     //     let obj = JSON.parse(lastCameraRotation);
