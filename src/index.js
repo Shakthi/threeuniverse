@@ -3,8 +3,11 @@ import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
 import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
 import { initController, updateController } from './controller'
-import instructionPanel  from './instructionPanel'
+import instructionPanel from './instructionPanel'
 import setLocationHash from 'set-location-hash';
+import loadScript from "simple-load-script";
+
+
 
 
 
@@ -12,50 +15,56 @@ import setLocationHash from 'set-location-hash';
 var camera, scene, renderer, controls;
 
 
+var threeLoaded;
+if (typeof window.THREE === 'undefined') {
+    threeLoaded = loadScript("../build/three.min.js");
+} else {
+    threeLoaded =  Promise.resolve();
+}
 
-if(typeof window.THREE === 'undefined'){
-    debugger;
-};
 
 
-initMaping().then(lmap => {
-    let initialPosition = new THREE.Vector3();
-    let offset = new THREE.Vector3(0, 100, 0);
 
-    let urlHashPosition = getHashObject();
+threeLoaded.then(() => {
+    initMaping().then(lmap => {
+        let initialPosition = new THREE.Vector3();
+        let offset = new THREE.Vector3(0, 100, 0);
 
-    if (urlHashPosition) {
-        initialPosition.set(offset.x + urlHashPosition.x, offset.y + urlHashPosition.y, offset.z + urlHashPosition.z);
-    } else {
+        let urlHashPosition = getHashObject();
 
-        let lastCameraPosition = localStorage.getItem("lastCameraPosition");
-        if (lastCameraPosition && lastCameraPosition !== "undefined") {
-            let obj = JSON.parse(lastCameraPosition);
-            initialPosition.set(offset.x + obj.x, offset.y + obj.y, offset.z + obj.z);
+        if (urlHashPosition) {
+            initialPosition.set(offset.x + urlHashPosition.x, offset.y + urlHashPosition.y, offset.z + urlHashPosition.z);
         } else {
-            let local_position = lmap.local_position;
-            ['x', 'y', 'z'].forEach(key => {
-                if (local_position[key])
-                    local_position[key] = Number(local_position[key]);
-                else
-                    local_position[key] = 0;
 
-            });
+            let lastCameraPosition = localStorage.getItem("lastCameraPosition");
+            if (lastCameraPosition && lastCameraPosition !== "undefined") {
+                let obj = JSON.parse(lastCameraPosition);
+                initialPosition.set(offset.x + obj.x, offset.y + obj.y, offset.z + obj.z);
+            } else {
+                let local_position = lmap.local_position;
+                ['x', 'y', 'z'].forEach(key => {
+                    if (local_position[key])
+                        local_position[key] = Number(local_position[key]);
+                    else
+                        local_position[key] = 0;
 
-            if (local_position) {
-                initialPosition.set(offset.x + local_position.x, offset.y + local_position.y, offset.z + local_position.z);
+                });
+
+                if (local_position) {
+                    initialPosition.set(offset.x + local_position.x, offset.y + local_position.y, offset.z + local_position.z);
+                }
+
+
+
             }
 
-
-
         }
-
-    }
-    init(initialPosition);
-    animate();
+        init(initialPosition);
+        animate();
 
 
-})
+    })
+});
 
 var isSetNeedToDisplay = true;
 function setNeedToDisplay() {
