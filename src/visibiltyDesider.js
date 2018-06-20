@@ -1,6 +1,6 @@
-//import { datGUI } from './dat'
+import { datGUI } from './dat'
 
-/*
+
 function init(info) {
 
     let fps = {
@@ -51,4 +51,3 @@ function init(info) {
 
 export { init as initVisibilityDesider }
 
-*/

@@ -147,7 +147,7 @@ function init(position) {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-    //initVisibilityDesider(renderer.info)
+    initVisibilityDesider(renderer.info)
 
     //
 
