@@ -47,6 +47,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
                 let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
                 if (baseUrl == local_part) {
                     item.url = item.url.substring(local_part.length);
+                    baseUrl="";
                 }
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                     item.disposer = null;
