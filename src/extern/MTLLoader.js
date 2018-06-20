@@ -3,7 +3,6 @@
  *
  * @author angelxuanchang
  */
-import * as THREE from 'three'
 
 
 let MTLLoader = function ( manager ) {

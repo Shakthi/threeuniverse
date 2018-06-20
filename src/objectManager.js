@@ -1,16 +1,25 @@
 
 import { loadnExecute } from './loadUnloader';
-import * as THREE from 'three';
 import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 
-let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });
+
+
+function getThreeX(){
+    if (!getThreeX.THREEEX) {
+        getThreeX.THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });        
+    }
+    
+    return getThreeX.THREEEX ;
+
+}
 
 let maping = null;
 let loadedParts = [];
 let local_part = "";
 
 export function initMaping() {
+    
     return new Promise(function (resolve) {
         loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
             return construct().then(lmap => {
@@ -62,7 +71,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
 
 
 
-                    let promise = construct(THREEEX, options);
+                    let promise = construct(getThreeX(), options);
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);

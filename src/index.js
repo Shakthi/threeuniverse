@@ -1,5 +1,4 @@
 
-import * as THREE from 'three';
 import { datGUI } from './dat';
 import { initVisibilityDesider } from './visibiltyDesider';
 import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
@@ -14,7 +13,9 @@ var camera, scene, renderer, controls;
 
 
 
-
+if(typeof window.THREE === 'undefined'){
+    debugger;
+};
 
 
 initMaping().then(lmap => {
@@ -63,7 +64,6 @@ function setNeedToDisplay() {
 
 var firstFrame = true;
 
-//blocker.style.display = 'none';
 
 
 function getHashObject() {
@@ -147,7 +147,7 @@ function init(position) {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-    initVisibilityDesider(renderer.info)
+    //initVisibilityDesider(renderer.info)
 
     //
 

@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 const PointerLockControls = require('three-pointerlock');
 
 var moveForward = false;
@@ -9,12 +8,18 @@ var canJump = false;
 var nitroBoost = false;
 
 var prevTime = performance.now();
-var velocity = new THREE.Vector3();
-var direction = new THREE.Vector3();
+var velocity, direction, prevPosition, prevRocation;
+
 
 
 var controls;
 export function initController(camera, setNeedsToRender) {
+    velocity = new THREE.Vector3();
+    direction = new THREE.Vector3();
+
+    prevPosition = new THREE.Vector3();
+    prevRocation = new THREE.Vector3();
+
 
     controls = new PointerLockControls(camera);
 
@@ -30,9 +35,9 @@ export function initController(camera, setNeedsToRender) {
             case 37: // left
             case 65: // a
                 moveLeft = true; break;
-            
+
             case 66: // b
-            nitroBoost = true; break;
+                nitroBoost = true; break;
 
             case 40: // down
             case 83: // s
@@ -78,7 +83,7 @@ export function initController(camera, setNeedsToRender) {
                 break;
 
             case 66: // b
-            nitroBoost = false; break;
+                nitroBoost = false; break;
         }
 
     };
@@ -91,8 +96,6 @@ export function initController(camera, setNeedsToRender) {
 }
 
 
-let prevPosition = new THREE.Vector3();
-let prevRocation = new THREE.Vector3();
 
 export function updateController(onObject) {
 
@@ -149,8 +152,8 @@ export function updateController(onObject) {
 
     if (distace > Number.EPSILON || Math.abs(rotation.x) > Number.EPSILON
         || Math.abs(rotation.y) > Number.EPSILON
-        || Math.abs(rotation.z) > Number.EPSILON) {  
-        
+        || Math.abs(rotation.z) > Number.EPSILON) {
+
         isUpdate = true;
     }
 

@@ -7,7 +7,6 @@
  'use strict';
 
 
-import * as THREE from 'three'
 import LoaderSupport from './LoaderSupport'
 import MTLLoader from './MTLLoader'
 
