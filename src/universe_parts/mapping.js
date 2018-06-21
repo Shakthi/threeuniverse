@@ -27,13 +27,13 @@ defineThreeUniverse(function () {
         {
             position: { x: 0, z: 0 },
             radius: 10000,
-            credits:"https://www.turbosquid.com/",
+            credits: "https://www.turbosquid.com/",
             url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/lonetree.js",
         },
         {
             position: { x: 100, z: 100 },
             radius: 10000,
-            credits:"https://www.turbosquid.com/",
+            credits: "https://www.turbosquid.com/",
             url: "https://shakthi.github.io/PartUniverse/src/universe_parts/smallforest.js",
         },
         {
@@ -53,12 +53,17 @@ defineThreeUniverse(function () {
             radius: 1000,
             description: "Simple cube ground",
             url: "https://ashwithags.github.io/ThreeJSUniverse/src/universe_parts/simpleCube.js",
-        }
+        }, {
+            position: { x: 600, z: 100 },
+            radius: 1000,
+            credits: "https://www.turbosquid.com/",
+            url: "https://shakthi.github.io/PartUniverse/src/universe_parts/hut.js",
+        },
 
 
 
     ];
 
-    return Promise.resolve({maping,local_part});
+    return Promise.resolve({ maping, local_part });
 
 })
