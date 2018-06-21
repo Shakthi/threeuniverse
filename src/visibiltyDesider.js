@@ -1,12 +1,13 @@
 import { datGUI } from './dat'
 
+let fps = {
+    displayCount: 0,
+    count: 0,
+    time:0
+}
+
 
 function init(info) {
-
-    let fps = {
-        displayCount:0,
-        count:0
-    }
 
     let infogui = datGUI.addFolder('Info');
 
@@ -14,23 +15,18 @@ function init(info) {
     infogui.add(info.render, 'triangles')
     infogui.add(info.memory, 'geometries');
     infogui.add(info.memory, 'textures');
-    infogui.add(info.programs, 'length');
+    infogui.add(info.programs, 'length').name("Shaders");
     infogui.add(fps, 'displayCount').name("fps");
-    
+1
 
-    function updatePerSecond(){
-        fps.displayCount = fps.count;
-        fps.count = 0;
-        setTimeout(updatePerSecond,1000);
-    } 
-    updatePerSecond();
+    function updatePerSecond() {
+        
+        var avg = fps.time /fps.count;
+        fps.displayCount = 1000/fps.time;
+        fps.time =fps.count=0;
+        ;
 
-
-
-
-    var update = function () {
-        fps.count ++;
-        requestAnimationFrame(update);
+        setTimeout(updatePerSecond, 1000);
 
         if (!infogui.closed) {
 
@@ -38,16 +34,37 @@ function init(info) {
                 infogui.__controllers[i].updateDisplay();
             }
         }
-    };
+    }
+    updatePerSecond();
 
-    update();
+
+
+
+
+
+    //update();
 
 
 }
 
 
 //datGUI.add
+var startTime;
+export var timeRenderBegin = function () {
 
+    startTime = new Date();
 
+    //requestAnimationFrame(update);
+
+    // 
+};
+
+export var timeRenderEnd = function () {
+    var endTime = new Date();
+    var timeDiff = endTime - startTime; //in ms
+   
+    fps.time += timeDiff;
+    fps.count++;
+}
 export { init as initVisibilityDesider }
 

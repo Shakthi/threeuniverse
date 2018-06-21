@@ -1,7 +1,7 @@
 
 import * as THREE from 'three';
 import { datGUI } from './dat';
-import { initVisibilityDesider } from './visibiltyDesider';
+import { initVisibilityDesider,timeRenderEnd,timeRenderBegin } from './visibiltyDesider';
 import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
 import { initController, updateController } from './controller'
 import instructionPanel  from './instructionPanel'
@@ -168,10 +168,21 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
+    var timeBegan = false;
+
+    if(isSetNeedToDisplay ){
+        timeRenderBegin();
+        timeBegan =true;
+    }
+
+
     if (isSetNeedToDisplay) {
+
         renderer.render(scene, camera);
+        
         isSetNeedToDisplay = false;
         updateloadedParts(controls.getObject().position);
+
     }
 
     if (controls.enabled === true || firstFrame) {
@@ -184,6 +195,8 @@ function animate() {
 
     }
 
+    if(timeBegan)
+        timeRenderEnd();
 }
 
 
