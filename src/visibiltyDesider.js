@@ -16,14 +16,15 @@ function init(info) {
     infogui.add(info.memory, 'geometries');
     infogui.add(info.memory, 'textures');
     infogui.add(info.programs, 'length').name("Shaders");
-    infogui.add(fps, 'displayCount').name("fps");
-1
+    infogui.add(fps, 'displayCount').name("Est fps");
+
+    
 
     function updatePerSecond() {
         
-        var avg = fps.time /fps.count;
-        fps.displayCount = 1000/fps.time;
-        fps.time =fps.count=0;
+        var avg = fps.time / fps.count;
+        fps.displayCount = 3000/(avg*100);
+        fps.time = fps.count= 0;
         ;
 
         setTimeout(updatePerSecond, 1000);
