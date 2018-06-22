@@ -20,6 +20,7 @@ export function initController(camera, setNeedsToRender) {
 
     var onKeyDown = function (event) {
 
+
         switch (event.keyCode) {
 
             case 38: // up
@@ -30,9 +31,13 @@ export function initController(camera, setNeedsToRender) {
             case 37: // left
             case 65: // a
                 moveLeft = true; break;
-            
+
             case 66: // b
-            nitroBoost = true; break;
+            case 67: // c
+            case 86: // v
+            case 78: // v
+            case 77: // v
+                nitroBoost = true; break;
 
             case 40: // down
             case 83: // s
@@ -52,6 +57,7 @@ export function initController(camera, setNeedsToRender) {
         }
 
     };
+
 
     var onKeyUp = function (event) {
 
@@ -77,8 +83,13 @@ export function initController(camera, setNeedsToRender) {
                 moveRight = false;
                 break;
 
-            case 66: // b
-            nitroBoost = false; break;
+           
+                case 66: // b
+                case 67: // c
+                case 86: // v
+                case 78: // v
+                case 77: // v
+                nitroBoost = false; break;
         }
 
     };
@@ -149,8 +160,8 @@ export function updateController(onObject) {
 
     if (distace > Number.EPSILON || Math.abs(rotation.x) > Number.EPSILON
         || Math.abs(rotation.y) > Number.EPSILON
-        || Math.abs(rotation.z) > Number.EPSILON) {  
-        
+        || Math.abs(rotation.z) > Number.EPSILON) {
+
         isUpdate = true;
     }
 
