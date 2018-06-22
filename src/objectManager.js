@@ -116,6 +116,17 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
                 });
             }
             unloaded.push(item);
+        } else {
+            if (item.object && item.estimatedRadius === undefined) {
+                let box = new THREE.Box3().setFromObject(item.object);
+                let sphere = new THREE.Sphere();
+                box.getBoundingSphere(sphere);
+                item.estimatedRadius = sphere.radius;
+                console.log(item.url,"Restimated radius to",item.estimatedRadius,"from item.radius",item.radius);
+                item.radius = item.estimatedRadius;
+
+
+            }
         }
 
 
