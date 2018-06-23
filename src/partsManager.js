@@ -37,7 +37,7 @@ export function initMaping() {
 
 var status = ''
 
-export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
+export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
     maping.forEach(item => {
 
@@ -94,7 +94,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
 
 }
 
-export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
+export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
     let unloaded = [];
     loadedParts.forEach(item => {
 

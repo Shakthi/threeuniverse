@@ -1,11 +1,13 @@
 
 import * as THREE from 'three';
-import { datGUI } from './gui';
-import { initVisibilityDesider, timeRenderEnd, timeRenderBegin } from './visibiltyDesider';
-import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
-import { initController, updateController } from './controller'
-import instructionPanel from './instructionPanel'
 import setLocationHash from 'set-location-hash';
+
+import { datGUI } from './gui';
+import * as qualityController from './qualityController';
+import * as partsManager from './partsManager'
+import * as controller from './controller'
+import instructionPanel from './instructionPanel'
+
 
 
 
@@ -17,7 +19,7 @@ var camera, scene, renderer, controls;
 
 
 
-initMaping().then(lmap => {
+partsManager.initMaping().then(lmap => {
     let initialPosition = new THREE.Vector3();
     let offset = new THREE.Vector3(0, 30, 0);
     let urlHashPosition = getHashObject();
@@ -122,12 +124,11 @@ function init(position) {
 
 
 
-    controls = initController(camera)
+    controls = controller.init(camera,position)
     scene.add(controls.getObject());
-    camera.position.y = position.y;
-    controls.getObject().translateX(position.x);
-    controls.getObject().translateZ(position.z);
+    camera.position.y = position.y;    
     instructionPanel.init(controls);
+
     // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
     // if (lastCameraRotation) {
     //     let obj = JSON.parse(lastCameraRotation);
@@ -146,12 +147,10 @@ function init(position) {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-    initVisibilityDesider(renderer.info)
+    qualityController.init(renderer.info)
 
-    //
 
     window.addEventListener('resize', onWindowResize, false);
-    //controls.enabled = true;
 
 }
 
@@ -173,7 +172,7 @@ function animate() {
     var timeBegan = false;
 
     if (isSetNeedToDisplay) {
-        timeRenderBegin();
+        qualityController.timeRenderBegin();
         timeBegan = true;
     }
 
@@ -181,34 +180,32 @@ function animate() {
     if (isSetNeedToDisplay) {
 
         renderer.render(scene, camera);
-
         isSetNeedToDisplay = false;
-        updateloadedParts(controls.getObject().position);
+        partsManager.updateloadedParts(controls.getObject().position);
 
     }
 
-    if (controls.enabled === true || firstFrame) {
-        if (updateController(false)) {
-            updateUniverseAt(controls.getObject().position);
-            setNeedToDisplay();
-        }
-
-        firstFrame = false;
-
+    if (controller.update() || firstFrame) {
+        updateUniverseAt(controls.getObject().position);
+        setNeedToDisplay();
     }
+
+    firstFrame = false;
+
+
 
     if (timeBegan)
-        timeRenderEnd();
+    qualityController.timeRenderEnd();
 }
 
 
 
 
 function updateUniverseAt(position) {
-    
+
     if (updateUniverseAtframeCount == 0) {
-        loadUniverseAt(position, camera.far, scene, setNeedToDisplay);
-        unLoadUniverseAt(position, camera.far, scene, setNeedToDisplay);
+        partsManager.loadPartsAt(position, camera.far, scene, setNeedToDisplay);
+        partsManager.unloadPartsAt(position, camera.far, scene, setNeedToDisplay);
 
     } else if (updateUniverseAtframeCount == 59) {
         localStorage.setItem("lastCameraPosition", JSON.stringify(position));

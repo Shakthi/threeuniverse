@@ -7,7 +7,7 @@ let fps = {
 }
 
 
-function init(info) {
+export function init(info) {
 
     let infogui = datGUI.addFolder('Info');
 
@@ -67,5 +67,4 @@ export var timeRenderEnd = function () {
     fps.time += timeDiff;
     fps.count++;
 }
-export { init as initVisibilityDesider }
 

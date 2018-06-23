@@ -14,10 +14,11 @@ var direction = new THREE.Vector3();
 
 
 var controls;
-export function initController(camera, setNeedsToRender) {
+export function init(camera, position) {
 
     controls = new PointerLockControls(camera);
-
+    controls.getObject().translateX(position.x);
+    controls.getObject().translateZ(position.z);
     var onKeyDown = function (event) {
 
 
@@ -105,7 +106,10 @@ export function initController(camera, setNeedsToRender) {
 let prevPosition = new THREE.Vector3();
 let prevRocation = new THREE.Vector3();
 
-export function updateController(onObject) {
+export function update(onObject) {
+
+    if(!controls.enabled)
+        return;
 
     var time = performance.now();
     var delta = (time - prevTime) / 1000;
@@ -128,12 +132,7 @@ export function updateController(onObject) {
     if (moveForward || moveBackward) velocity.z -= direction.z * mult * delta;
     if (moveLeft || moveRight) velocity.x -= direction.x * mult * delta;
 
-    if (onObject === true) {
-
-        velocity.y = Math.max(0, velocity.y);
-        canJump = true;
-
-    }
+  
     controls.getObject().translateX(velocity.x * delta);
     controls.getObject().translateY(velocity.y * delta);
     controls.getObject().translateZ(velocity.z * delta);
