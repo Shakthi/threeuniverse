@@ -217,7 +217,8 @@ function updateUniverseAt(position) {
     if (updateUniverseAt.frameCount == 59) {
         localStorage.setItem("lastCameraPosition", JSON.stringify(position));
         localStorage.setItem("lastCameraRotation", JSON.stringify(controls.getObject().rotation));
-
+        console.log("Got");
+        
         setLocationHash(`x:${controls.getObject().position.x.toFixed(0)}&z:${controls.getObject().position.z.toFixed(0)}`,
             { replace: true });
     }
