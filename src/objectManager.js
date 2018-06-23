@@ -16,12 +16,12 @@ export function initMaping() {
             return construct().then(lmap => {
                 maping = lmap.maping;
                 local_part = lmap.local_part;
-                let localPartItems = maping.filter(item=>item.url.startsWith(local_part));
-                
+                let localPartItems = maping.filter(item => item.url.startsWith(local_part));
+
                 if (localPartItems.length) {
                     lmap.local_position = localPartItems[0].position;
                 }
-                
+
 
                 resolve(lmap);
             });
@@ -41,13 +41,16 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
         if (!loadedParts.includes(item)) {
             let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
             let distance = vectposition.distanceTo(position);
+            if (!item.radius) {
+                item.radius = 1000;
+            }
             if (distance - item.radius < far) {
                 let anchor = new THREE.Object3D();
                 anchor.position.copy(vectposition);
                 let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
                 if (baseUrl == local_part) {
                     item.url = item.url.substring(local_part.length);
-                    baseUrl="";
+                    baseUrl = "";
                 }
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                     item.disposer = null;
@@ -96,8 +99,8 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
         if (distance - item.radius > far + 100 && item.object) {
 
             console.log("Unloading ", item.url);
-
-            item.object.parent.remove(item.object);
+            if (item.object.parent)
+                item.object.parent.remove(item.object);
             if (item.disposer) {
                 item.disposer();
             } else {
@@ -105,11 +108,19 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
                     if (obj.isMesh) {
                         if (obj.geometry)
                             obj.geometry.dispose();
-                        if (obj.material) {
+                        if (obj.material instanceof Array) {
+                            obj.material.forEach(item => {
+                                if (item.map) {
+                                    item.map.dispose();
+                                }
+                                item.dispose();
+                            });
+                        } else {
                             if (obj.material.map)
                                 obj.material.map.dispose();
                             obj.material.dispose();
                         }
+
 
                     }
 
@@ -122,7 +133,7 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
                 let sphere = new THREE.Sphere();
                 box.getBoundingSphere(sphere);
                 item.estimatedRadius = sphere.radius;
-                console.log(item.url,"Restimated radius to",item.estimatedRadius,"from item.radius",item.radius);
+                console.log(item.url, "Restimated radius to", item.estimatedRadius, "from item.radius", item.radius);
                 item.radius = item.estimatedRadius;
 
 
