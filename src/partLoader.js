@@ -5,12 +5,12 @@ import loadScript from "simple-load-script";
 let num = 0;
 let callbackMap = {};
 
-
-export function loadnExecute(url, initializer, callback) {
+/** Loads external javascript. Via initializerName function callback executed from the external script*/
+export function loadnExecute(url, initializerName, callback) {
     num++;
 
     callbackMap[num] = callback;
-    window[initializer] = function () {
+    window[initializerName] = function () {
 
         let attrs = document.currentScript.attributes;
 
@@ -35,28 +35,13 @@ export function loadnExecute(url, initializer, callback) {
         removeScript: true, attrs: {
             "data-scriptid": `${num}`
         }
-    }).then(element => {
-        
-       console.log(`Loaded ${url}`);
+    }).then(element => {        
+       //console.log(`Loaded ${url}`);
     });
 
 
 
 }
 
-
-
-
-
-/*
-
-
-loadnExecute("https://shakthi.github.io/ThreeJSUniverse/src/sampleMeshModule.js",
-    "defineThreeUniverse", function (contruct) {
-        //document.currentScript;
-        scene.add(contruct(THREE));
-    });
-
-*/
 
 

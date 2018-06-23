@@ -1,5 +1,5 @@
 
-import { loadnExecute } from './loadUnloader';
+import { loadnExecute } from './partLoader';
 import * as THREE from 'three';
 import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
