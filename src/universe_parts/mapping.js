@@ -3,17 +3,7 @@ defineThreeUniverse(function () {
     let local_part = "https://shakthi.github.io/ThreeJSUniverse/";
 
     let maping = [
-        {
-            position: { x: 0, z: -100 },
-            description: "IcosahedronGeometry",
-            url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
-
-        },
-        {
-            position: { x: 200, z: -500 },
-            description: "IcosahedronGeometry",
-            url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
-        },
+       
         {
             position: { x: 0, z: 0 },
             description: "Grass ground with single texture",
@@ -43,8 +33,19 @@ defineThreeUniverse(function () {
             radius: 1500,
             url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/futureGround.js",
         },
+         {
+            position: { x: 200, z: -2500 },
+            description: "IcosahedronGeometry",
+            url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
+
+        },
         {
-            position: { x: 542, y: 0, z: -582 },
+            position: { x: -1000, z: -2900 },
+            description: "IcosahedronGeometry",
+            url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/sampleMeshModule.js"
+        },
+        {
+            position: { x: 542, y: 0, z: -1900 },
             description: "Simple cube ground",
             url: "https://ashwithags.github.io/ThreeJSUniverse/src/universe_parts/simpleCube.js",
         }, {
