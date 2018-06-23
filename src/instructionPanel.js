@@ -56,12 +56,12 @@ var instructions = document.getElementById('instructions');
         document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
 
-        function firsttlock() {
-            element.requestPointerLock();
-            element.removeEventListener('click', firsttlock);
-        }
+        // function firsttlock() {
+        //     element.requestPointerLock();
+        //     element.removeEventListener('click', firsttlock);
+        // }
 
-        element.addEventListener('click', firsttlock);
+        // element.addEventListener('click', firsttlock);
 
 
         instructions.addEventListener('click', function (event) {
