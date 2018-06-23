@@ -1,12 +1,12 @@
 
-defineThreeUniverse(function (THREE) {
+defineThreeUniverse(function (THREE,options) {
 
     return new Promise(function (resolve, reject) {
 
         var loader = new THREE.TextureLoader();
         var mesh = null;
 
-        var groundTexture = loader.load('resource/grasslight-big.jpg',
+        var groundTexture = loader.load(options.baseUrl+'resource/grasslight-big.jpg',
             () => {resolve(mesh)},
             null,
             (error) => {reject(error)}
