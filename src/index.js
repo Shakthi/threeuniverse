@@ -19,8 +19,7 @@ var camera, scene, renderer, controls;
 
 initMaping().then(lmap => {
     let initialPosition = new THREE.Vector3();
-    let offset = new THREE.Vector3(0, 100, 0);
-
+    let offset = new THREE.Vector3(0, 30, 0);
     let urlHashPosition = getHashObject();
 
     if (urlHashPosition) {
@@ -107,9 +106,7 @@ function init(position) {
     scene.background = new THREE.Color(0xcce0ff);
     scene.fog = new THREE.Fog(0xcce0ff, 500, 1800);
 
-    datGUI.add(scene.fog, 'near', 0, 100).name("fog near");
-
-    datGUI.add(scene.fog, 'far', 10, 10000).name("fog far");
+    
     datGUI.close();
 
 
@@ -117,15 +114,18 @@ function init(position) {
     let camfar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
     camfar.onChange(value => {
         camera.updateProjectionMatrix();
+        scene.fog.far = camera.far*0.9;
+        scene.fog.near = camera.far*0.25;
     });
 
+    scene.fog.far = camera.far*0.9;
+    scene.fog.near = camera.far*0.25;
+    
 
-    // var light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
-    // light.position.set(0.5, 1, 0.75);
-    // scene.add(light);
+    
     controls = initController(camera)
     scene.add(controls.getObject());
-    camera.position.y = 100;
+    camera.position.y = position.y;
     controls.getObject().translateX(position.x);
     controls.getObject().translateZ(position.z);
     instructionPanel.init(controls);

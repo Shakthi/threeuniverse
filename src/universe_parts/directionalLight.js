@@ -14,8 +14,8 @@ defineThreeUniverse(function (THREE,options) {
     light.shadow.mapSize.height = 512; // default
     light.shadow.camera.near = 0.5;    // default
     light.shadow.camera.far = 500;     // default
-    light.shadow.camera.left = light.shadow.camera.bottom = -800;
-    light.shadow.camera.top = light.shadow.camera.right =800;
+    light.shadow.camera.left = light.shadow.camera.bottom = -900;
+    light.shadow.camera.top = light.shadow.camera.right =900;
     light.add(light.target);
     light.target.position.set(-50,-200,0);
 
@@ -24,6 +24,9 @@ defineThreeUniverse(function (THREE,options) {
             light.position.set(position.x+50, 200,position.z+ 0);
         })
     }    
+
+    // var helper = new THREE.CameraHelper( light.shadow.camera );
+    // light.add( helper );
 
     resolve(light);
 
