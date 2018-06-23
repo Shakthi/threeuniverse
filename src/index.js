@@ -1,10 +1,10 @@
 
 import * as THREE from 'three';
 import { datGUI } from './dat';
-import { initVisibilityDesider,timeRenderEnd,timeRenderBegin } from './visibiltyDesider';
+import { initVisibilityDesider, timeRenderEnd, timeRenderBegin } from './visibiltyDesider';
 import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
 import { initController, updateController } from './controller'
-import instructionPanel  from './instructionPanel'
+import instructionPanel from './instructionPanel'
 import setLocationHash from 'set-location-hash';
 
 
@@ -105,7 +105,7 @@ function init(position) {
     scene.background = new THREE.Color(0xcce0ff);
     scene.fog = new THREE.Fog(0xcce0ff, 500, 1800);
 
-    
+
     datGUI.close();
 
 
@@ -113,15 +113,15 @@ function init(position) {
     let camfar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
     camfar.onChange(value => {
         camera.updateProjectionMatrix();
-        scene.fog.far = camera.far*0.9;
-        scene.fog.near = camera.far*0.25;
+        scene.fog.far = camera.far * 0.9;
+        scene.fog.near = camera.far * 0.25;
     });
 
-    scene.fog.far = camera.far*0.9;
-    scene.fog.near = camera.far*0.25;
-    
+    scene.fog.far = camera.far * 0.9;
+    scene.fog.near = camera.far * 0.25;
 
-    
+
+
     controls = initController(camera)
     scene.add(controls.getObject());
     camera.position.y = position.y;
@@ -165,20 +165,23 @@ function onWindowResize() {
 
 }
 
+let updateUniverseAtframeCount = 0;
+
+
 function animate() {
     requestAnimationFrame(animate);
     var timeBegan = false;
 
-    if(isSetNeedToDisplay ){
+    if (isSetNeedToDisplay) {
         timeRenderBegin();
-        timeBegan =true;
+        timeBegan = true;
     }
 
 
     if (isSetNeedToDisplay) {
 
         renderer.render(scene, camera);
-        
+
         isSetNeedToDisplay = false;
         updateloadedParts(controls.getObject().position);
 
@@ -194,7 +197,7 @@ function animate() {
 
     }
 
-    if(timeBegan)
+    if (timeBegan)
         timeRenderEnd();
 }
 
@@ -202,33 +205,25 @@ function animate() {
 
 
 function updateUniverseAt(position) {
-    if (!updateUniverseAt.frameCount) {
-        updateUniverseAt.frameCount = 0;
-    }
-    if (updateUniverseAt.frameCount == 0) {
+    
+    if (updateUniverseAtframeCount == 0) {
         loadUniverseAt(position, camera.far, scene, setNeedToDisplay);
         unLoadUniverseAt(position, camera.far, scene, setNeedToDisplay);
 
-    }
-
-
-
-
-    if (updateUniverseAt.frameCount == 59) {
+    } else if (updateUniverseAtframeCount == 59) {
         localStorage.setItem("lastCameraPosition", JSON.stringify(position));
         localStorage.setItem("lastCameraRotation", JSON.stringify(controls.getObject().rotation));
-        console.log("Got");
-        
+
         setLocationHash(`x:${controls.getObject().position.x.toFixed(0)}&z:${controls.getObject().position.z.toFixed(0)}`,
             { replace: true });
     }
 
 
-    if (updateUniverseAt.frameCount < 60) {
-        updateUniverseAt.frameCount++;
+    if (updateUniverseAtframeCount < 60) {
+        updateUniverseAtframeCount++;
     } else {
 
-        updateUniverseAt.frameCount = 0;
+        updateUniverseAtframeCount = 0;
     }
 
 
