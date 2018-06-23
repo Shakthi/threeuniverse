@@ -42,7 +42,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
             let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
             let distance = vectposition.distanceTo(position);
             if (!item.radius) {
-                item.radius = 1000;
+                item.radius = 0;
             }
             if (distance - item.radius < far) {
                 let anchor = new THREE.Object3D();
@@ -128,13 +128,12 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
             }
             unloaded.push(item);
         } else {
-            if (item.object && item.estimatedRadius === undefined) {
+            if (item.object && item.radius === 0) {
                 let box = new THREE.Box3().setFromObject(item.object);
                 let sphere = new THREE.Sphere();
-                box.getBoundingSphere(sphere);
-                item.estimatedRadius = sphere.radius;
-                console.log(item.url, "Restimated radius to", item.estimatedRadius, "from item.radius", item.radius);
-                item.radius = item.estimatedRadius;
+                box.getBoundingSphere(sphere);                
+                console.log(item.url, "Eestimated radius:", sphere.radius);
+                item.radius = sphere.radius;
 
 
             }

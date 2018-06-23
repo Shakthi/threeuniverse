@@ -33,6 +33,7 @@ defineThreeUniverse(function () {
         },
         {
             position: { x: 0, z: 0 },
+            radius: 10.0e10,
             url: "https://shakthi.github.io/ThreeJSUniverse/src/universe_parts/directionalLight.js",
             //credits: "https://threejs.org/examples/#webgl_animation_cloth"
         },
