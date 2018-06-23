@@ -1,4 +1,4 @@
-import { datGUI } from './dat'
+import { datGUI } from './gui'
 
 let fps = {
     displayCount: 0,

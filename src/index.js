@@ -1,6 +1,6 @@
 
 import * as THREE from 'three';
-import { datGUI } from './dat';
+import { datGUI } from './gui';
 import { initVisibilityDesider, timeRenderEnd, timeRenderBegin } from './visibiltyDesider';
 import { loadUniverseAt, unLoadUniverseAt, updateloadedParts, initMaping } from './objectManager'
 import { initController, updateController } from './controller'
