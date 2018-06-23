@@ -1,6 +1,7 @@
 
 import loadScript from "simple-load-script";
 
+
 let num = 0;
 let callbackMap = {};
 
@@ -35,6 +36,7 @@ export function loadnExecute(url, initializer, callback) {
             "data-scriptid": `${num}`
         }
     }).then(element => {
+        
        console.log(`Loaded ${url}`);
     });
 

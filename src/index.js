@@ -62,7 +62,6 @@ function setNeedToDisplay() {
 
 var firstFrame = true;
 
-//blocker.style.display = 'none';
 
 
 function getHashObject() {

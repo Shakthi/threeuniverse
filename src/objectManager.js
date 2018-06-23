@@ -3,7 +3,15 @@ import { loadnExecute } from './loadUnloader';
 import * as THREE from 'three';
 import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
+import Snackbar from 'node-snackbar';
 
+let console= {
+    log:function (params) {
+        Snackbar.show({pos: 'bottom-right',text:params}); //Set the position
+
+    }
+    
+}
 let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });
 
 let maping = null;
@@ -72,6 +80,7 @@ export function loadUniverseAt(position, far, scene, setNeedToDisplay) {
                         scene.add(anchor);
                         item.object = anchor;
                         setNeedToDisplay();
+                        console.log(`Loaded  ${item.url}`);
 
                     })
 
@@ -98,7 +107,7 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
         let distance = vectposition.distanceTo(position);
         if (distance - item.radius > far + 100 && item.object) {
 
-            console.log("Unloading ", item.url);
+            console.log(`Unloading  ${item.url}`);
             if (item.object.parent)
                 item.object.parent.remove(item.object);
             if (item.disposer) {
@@ -132,7 +141,7 @@ export function unLoadUniverseAt(position, far, scene, setNeedToDisplay) {
                 let box = new THREE.Box3().setFromObject(item.object);
                 let sphere = new THREE.Sphere();
                 box.getBoundingSphere(sphere);                
-                console.log(item.url, "Eestimated radius:", sphere.radius);
+                console.log(`${item.url} Eestimated radius: ${sphere.radius}`);
                 item.radius = sphere.radius;
 
 
