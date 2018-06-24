@@ -2,11 +2,12 @@
 import * as THREE from 'three';
 import setLocationHash from 'set-location-hash';
 
-import { datGUI } from './gui';
 import * as qualityController from './qualityController';
 import * as partsManager from './partsManager'
 import * as controller from './controller'
 import instructionPanel from './instructionPanel'
+import { datGUI } from './gui';
+
 
 
 
@@ -14,6 +15,9 @@ import instructionPanel from './instructionPanel'
 
 var camera, scene, renderer, controls;
 
+var isSetNeedToDisplay = true;
+var isFirstFrame = true;
+var updateUniverseAtframeCount = 0;
 
 
 
@@ -22,7 +26,7 @@ var camera, scene, renderer, controls;
 partsManager.initMaping().then(lmap => {
     let initialPosition = new THREE.Vector3();
     let offset = new THREE.Vector3(0, 30, 0);
-    let urlHashPosition = getHashObject();
+    let urlHashPosition = getLocationHashObject();
 
     if (urlHashPosition) {
         initialPosition.set(offset.x + urlHashPosition.x, offset.y + urlHashPosition.y, offset.z + urlHashPosition.z);
@@ -46,8 +50,6 @@ partsManager.initMaping().then(lmap => {
                 initialPosition.set(offset.x + local_position.x, offset.y + local_position.y, offset.z + local_position.z);
             }
 
-
-
         }
 
     }
@@ -57,76 +59,36 @@ partsManager.initMaping().then(lmap => {
 
 })
 
-var isSetNeedToDisplay = true;
-function setNeedToDisplay() {
-    isSetNeedToDisplay = true;
-}
-
-var firstFrame = true;
 
 
-
-function getHashObject() {
-    let hashParam = window.location.hash.substr(1).split('&');
-    let hashParamObject = {};
-    hashParam.forEach(item => {
-        let splitted = item.split(':')
-        hashParamObject[splitted[0]] = splitted[1];
-    })
-
-    if (hashParam.length <= 1) {
-        return null;
-    }
-
-    function setVal(pr) {
-        if (hashParamObject[pr])
-            hashParamObject[pr] = Number(hashParamObject[pr]);
-        else
-            hashParamObject[pr] = 0;
-    }
-
-    setVal('x');
-    setVal('y');
-    setVal('z');
-    ;
-
-    return hashParamObject;
-}
 
 
 function init(position) {
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
-
-
-
-
     scene = new THREE.Scene();
-
-
     scene.background = new THREE.Color(0xcce0ff);
     scene.fog = new THREE.Fog(0xcce0ff, 500, 1800);
 
 
-    datGUI.close();
+    let cameraFar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
 
-
-
-    let camfar = datGUI.add(camera, 'far', 100, 10000).name("Camera far");
-    camfar.onChange(value => {
-        camera.updateProjectionMatrix();
+    function matchFog() {
         scene.fog.far = camera.far * 0.9;
         scene.fog.near = camera.far * 0.25;
+    }
+    matchFog();
+    cameraFar.onChange(value => {
+        camera.updateProjectionMatrix();
+        matchFog();
     });
 
-    scene.fog.far = camera.far * 0.9;
-    scene.fog.near = camera.far * 0.25;
+    
 
 
-
-    controls = controller.init(camera,position)
+    controls = controller.init(camera, position)
     scene.add(controls.getObject());
-    camera.position.y = position.y;    
+    camera.position.y = position.y;
     instructionPanel.init(controls);
 
     // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
@@ -164,7 +126,7 @@ function onWindowResize() {
 
 }
 
-let updateUniverseAtframeCount = 0;
+
 
 
 function animate() {
@@ -185,17 +147,17 @@ function animate() {
 
     }
 
-    if (controller.update() || firstFrame) {
+    if (controller.update() || isFirstFrame) {
         updateUniverseAt(controls.getObject().position);
         setNeedToDisplay();
     }
 
-    firstFrame = false;
+    isFirstFrame = false;
 
 
 
     if (timeBegan)
-    qualityController.timeRenderEnd();
+        qualityController.timeRenderEnd();
 }
 
 
@@ -226,4 +188,38 @@ function updateUniverseAt(position) {
 
 
 
+}
+
+
+
+function getLocationHashObject() {
+    let hashParam = window.location.hash.substr(1).split('&');
+    let hashParamObject = {};
+    hashParam.forEach(item => {
+        let splitted = item.split(':')
+        hashParamObject[splitted[0]] = splitted[1];
+    })
+
+    if (hashParam.length <= 1) {
+        return null;
+    }
+
+    function setVal(pr) {
+        if (hashParamObject[pr])
+            hashParamObject[pr] = Number(hashParamObject[pr]);
+        else
+            hashParamObject[pr] = 0;
+    }
+
+    setVal('x');
+    setVal('y');
+    setVal('z');
+
+
+    return hashParamObject;
+}
+
+
+function setNeedToDisplay() {
+    isSetNeedToDisplay = true;
 }

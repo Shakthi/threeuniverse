@@ -1,6 +1,8 @@
 import { datGUI } from './gui'
 
-let fps = {
+
+//Since screen refresh done on demand, We estimate fps based on time taken to render.
+let pseudoFPS = {
     displayCount: 0,
     count: 0,
     time:0
@@ -16,16 +18,16 @@ export function init(info) {
     infogui.add(info.memory, 'geometries');
     infogui.add(info.memory, 'textures');
     infogui.add(info.programs, 'length').name("Shaders");
-    infogui.add(fps, 'displayCount').name("Est fps");
+    infogui.add(pseudoFPS, 'displayCount').name("Est FPS");
 
     
 
     function updatePerSecond() {
         
-        var avg = fps.time / fps.count;
-        fps.displayCount = 3000/(avg*100);
-        fps.time = fps.count= 0;
-        ;
+        var avg = pseudoFPS.time / pseudoFPS.count;
+        pseudoFPS.displayCount = 3000/(avg*100);
+        pseudoFPS.time = pseudoFPS.count= 0;
+        
 
         setTimeout(updatePerSecond, 1000);
 
@@ -43,28 +45,19 @@ export function init(info) {
 
 
 
-    //update();
-
-
 }
 
 
-//datGUI.add
 var startTime;
 export var timeRenderBegin = function () {
-
     startTime = new Date();
-
-    //requestAnimationFrame(update);
-
-    // 
 };
 
 export var timeRenderEnd = function () {
     var endTime = new Date();
     var timeDiff = endTime - startTime; //in ms
    
-    fps.time += timeDiff;
-    fps.count++;
+    pseudoFPS.time += timeDiff;
+    pseudoFPS.count++;
 }
 

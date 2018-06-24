@@ -9,5 +9,5 @@ export let OnScreen= {
     
 }
 
-let gui = new dat.GUI();
-export { gui as datGUI }
+export let datGUI = new dat.GUI();
+datGUI.close();

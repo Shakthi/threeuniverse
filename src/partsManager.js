@@ -166,7 +166,3 @@ export function updateloadedParts(position) {
     }
 }
 
-//p---fr-----0
- //   0p-or<f
-
- //g>f
