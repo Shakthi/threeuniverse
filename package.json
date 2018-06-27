@@ -1,11 +1,13 @@
 {
-  "name": "threejsuniverse",
+  "name": "threeuniverse",
   "version": "1.0.0",
   "description": "Three js based distributed universe.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "webpack -p",
+    "push": "webpack-cli -p;git add build/universe.bundle.js; git commit -m 'updated build ';git push"
   },
   "keywords": [
     "threejs",

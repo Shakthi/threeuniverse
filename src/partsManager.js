@@ -136,7 +136,7 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
                 let box = new THREE.Box3().setFromObject(item.object);
                 let sphere = new THREE.Sphere();
                 box.getBoundingSphere(sphere);                
-                OnScreen.log(`${item.url} Eestimated radius: ${sphere.radius}`);
+                OnScreen.log(`${item.url} Eestimated radius: ${sphere.radius.toFixed(1)}`);
                 item.radius = sphere.radius;
 
 

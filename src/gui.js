@@ -3,7 +3,7 @@ import Snackbar from 'node-snackbar';
 
 export let OnScreen= {
     log:function (params) {
-        Snackbar.show({pos: 'bottom-right',text:params}); //Set the position
+        Snackbar.show({pos: 'bottom-right',text:params,showAction:false}); //Set the position
 
     }
     
