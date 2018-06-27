@@ -14,10 +14,10 @@ Please checkout the current progress at https://threeuniverse.org
 
 It is super easy to create your structure in this universe. 
 - Fork this repo. Let your new repo path  github.com/YourName/threeuniverse
-- [Enable GitHub pages for the repository.](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/). This should create your GitHub Pages at  https://yourname.github.io/threeuniverse/ *Note: Sometimes it might take couple of minutes to your GitHub pages to start to work*
-- Goto the above page. Roam around in the universe. Observe your coordinates on browser URL (say https://yourname.github.io/threeuniverse/#x:744&z:495)
+- [Enable GitHub pages for the repository.](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/). This should create your GitHub Pages at  https://<span></span>yourname.github.io/threeuniverse/ *Note: Sometimes it might take couple of minutes to your GitHub pages to start to work*
+- Goto the above page. Roam around in the universe. Observe your coordinates on browser URL (say https://<span></span>yourname.github.io/threeuniverse/#x:744&z:495)
 - Create a part at src/universe_parts. You can copy or refer to existing parts.
-- Open src/universe_parts/mapping.js and edit local_part such that local_part=https://yourname.github.io/threeuniverse/
+- Open src/universe_parts/mapping.js and edit local_part such that local_part=https://<span></span>yourname.github.io/threeuniverse/
 - Add your entry to mapping.js with position as thr position you noted earlier.
-- Save/Commit. On refresh, your model should appear at https://yourname.github.io/threeuniverse/#x:744&z:495
+- Save/Commit. On refresh, your model should appear at https://<span></span>yourname.github.io/threeuniverse/#x:744&z:495
 - Create a pull request to share your creation with threeuniverse.org You need to send pull request only once, all further modifications appears automatically on threeuniverse.org
