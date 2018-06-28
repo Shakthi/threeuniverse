@@ -1,6 +1,6 @@
 
 
-defineThreeUniverse( function (THREE) {
+defineThreeUniverse( function (THREE,options) {
 
     var faceIndices = [ 'a', 'b', 'c' ];
 
@@ -37,7 +37,16 @@ defineThreeUniverse( function (THREE) {
     wireframe = new THREE.Mesh(geometry3, wireframeMaterial);
     mesh.add(wireframe);
     mesh.scale.set(0.25,0.25,0.25);
-    mesh.position.set(0,100,0);
+    var clock = new THREE.Clock();
+    if(options.requestAnimationFrame){
+        options.requestAnimationFrame(function () {
+            mesh.position.y=Math.sin(clock.getElapsedTime())*100+100;
+            
+        });
+    }
+
+
+
     return Promise.resolve(mesh);
 });
 

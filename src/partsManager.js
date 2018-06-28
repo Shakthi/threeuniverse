@@ -63,6 +63,11 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                         },
                         onCameraUpdate: function (fun) {
                             item.onCameraUpdate = fun;
+                            cameraUpdateList.push(item);
+                        },
+                        requestAnimationFrame: function (fun) {
+                            item.requestAnimationFrame = fun;
+                            requestAnimationFrameList.push(item);
                         },
                         baseUrl: baseUrl,
                     };
@@ -94,6 +99,27 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
 }
 
+function onUnloadPart(part) {
+
+    let cindex = cameraUpdateList.indexOf(part)
+    if (cindex != -1) {
+        if (cindex != -1) {
+            cameraUpdateList.splice(cindex, 1);
+        }
+    }
+
+    cindex = requestAnimationFrameList.indexOf(part)
+    if (cindex != -1) {
+        if (cindex != -1) {
+            requestAnimationFrameList.splice(cindex, 1);
+        }
+    }
+
+
+
+
+}
+
 export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
     let unloaded = [];
     loadedParts.forEach(item => {
@@ -101,7 +127,7 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
         let vectposition = new THREE.Vector3(item.position.x, item.position.y, item.position.z);
         let distance = vectposition.distanceTo(position);
         if (distance - item.radius > far + 100 && item.object) {
-
+            onUnloadPart(item);
             OnScreen.log(`Unloading  ${item.url}`);
             if (item.object.parent)
                 item.object.parent.remove(item.object);
@@ -135,7 +161,7 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
             if (item.object && item.radius === 0) {
                 let box = new THREE.Box3().setFromObject(item.object);
                 let sphere = new THREE.Sphere();
-                box.getBoundingSphere(sphere);                
+                box.getBoundingSphere(sphere);
                 OnScreen.log(`${item.url} Eestimated radius: ${sphere.radius.toFixed(1)}`);
                 item.radius = sphere.radius;
 
@@ -158,11 +184,21 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
 
 }
 
+let cameraUpdateList = [];
 export function updateloadedParts(position) {
-    for (let i = loadedParts.length - 1; i > -1; i--) {
-        if (loadedParts[i].onCameraUpdate) {
-            loadedParts[i].onCameraUpdate(position);
-        }
+    for (let i = cameraUpdateList.length - 1; i > -1; i--) {
+        cameraUpdateList[i].onCameraUpdate(position);
+
     }
+}
+
+let requestAnimationFrameList = [];
+
+export function delegateRequestAnimationFrame(delta) {
+    for (var i = requestAnimationFrameList.length - 1; i > -1; i--) {
+        requestAnimationFrameList[i].requestAnimationFrame(delta);
+
+    }
+    return requestAnimationFrameList.length>0;
 }
 

@@ -14,6 +14,10 @@ var direction = new THREE.Vector3();
 
 
 var controls;
+export function enabled() {
+    return controls.enabled;
+}
+
 export function init(camera, position) {
 
     controls = new PointerLockControls(camera);

@@ -83,7 +83,7 @@ function init(position) {
         matchFog();
     });
 
-    
+
 
 
     controls = controller.init(camera, position)
@@ -131,13 +131,12 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    var timeBegan = false;
 
-    if (isSetNeedToDisplay) {
-        qualityController.timeRenderBegin();
-        timeBegan = true;
-    }
+    qualityController.timeRenderBegin();
 
+
+    if (controller.enabled())
+        isSetNeedToDisplay =  partsManager.delegateRequestAnimationFrame()||isSetNeedToDisplay ;
 
     if (isSetNeedToDisplay) {
 
@@ -156,8 +155,7 @@ function animate() {
 
 
 
-    if (timeBegan)
-        qualityController.timeRenderEnd();
+    qualityController.timeRenderEnd();
 }
 
 
