@@ -47,7 +47,7 @@ defineThreeUniverse( function (THREE,options) {
 
 
 
-    return Promise.resolve(mesh);
+    return mesh;
 });
 
 //Test commit

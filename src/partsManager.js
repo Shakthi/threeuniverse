@@ -74,7 +74,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
 
 
-                    let promise = construct(THREEEX, options);
+                    let promise = Promise.resolve(construct(THREEEX, options));
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);

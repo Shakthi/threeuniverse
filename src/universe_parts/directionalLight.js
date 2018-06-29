@@ -1,7 +1,6 @@
 
 defineThreeUniverse(function (THREE,options) {
 
-    return new Promise(function (resolve, reject) {
 
       
     //Create a DirectionalLight and turn on shadows for the light
@@ -28,7 +27,6 @@ defineThreeUniverse(function (THREE,options) {
     // var helper = new THREE.CameraHelper( light.shadow.camera );
     // light.add( helper );
 
-    resolve(light);
+    return light;
 
-    });
 });

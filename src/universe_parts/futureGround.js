@@ -39,6 +39,6 @@ defineThreeUniverse(function (THREE) {
     var floorMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors });
 
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    return Promise.resolve(floor);
+    return floor;
 
 });
