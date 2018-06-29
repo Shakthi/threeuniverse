@@ -17,6 +17,17 @@ It is super easy to create your structure in this universe.
 - [Enable GitHub pages for the repository.](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/). This should create your GitHub Pages at  https://<span></span>yourname.github.io/threeuniverse/index.html *Note: Sometimes it might take couple of minutes to your GitHub pages to start to work*
 - Goto the above page. Roam around in the universe. Observe your coordinates on browser URL (say https://<span></span>yourname.github.io/threeuniverse/index.html#x:744&z:495)
 - Create a part at src/universe_parts. You can copy or refer to existing parts.
-- Add your entry to mapping.js with position as the position you noted earlier.
+```javascript
+//sampleCube.js - Sample cube part file
+defineThreeUniverse(function (THREE) {
+
+        var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+        var material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+        var cube = new THREE.Mesh( geometry, material );
+
+        return cube;
+});
+  ```    
+- Add your entry to src/universe_parts/mapping.js with position as the position you noted earlier.
 - Save/Commit. On refresh, your model should appear at https://<span></span>yourname.github.io/threeuniverse/index.html#x:744&z:495
 - Create a pull request to share your creation with threeuniverse.org You need to send pull request only once, all further modifications appears automatically on threeuniverse.org
