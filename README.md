@@ -4,9 +4,12 @@ Imagine a wiki-like 3D world, where anybody can create their 3d structures, form
 FPS controls enable to roam around the universe and check out the areas with different parts of the universe progressively loaded from individual contributor's GitHub Pages. With exception of browser cache, the changes made to universe parts dyanamically reflected, and no more pull-requests needed.
 
 
-Please checkout the current progress at https://threeuniverse.org
+Please checkout the current progress at 
 
 
+- https://threeuniverse.org/#x:1088&z:556 - Village life
+- https://threeuniverse.org/#x:83&z:483 - Small forest 
+- https://threeuniverse.org/#x:83&z:-1444 - Future world
 
 
 
