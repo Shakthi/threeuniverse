@@ -14,6 +14,7 @@ Please checkout the current progress at https://threeuniverse.org
 
 It is super easy to create your structure in this universe. 
 - Fork this repo. Let your new repo path  github.com/YourName/threeuniverse
+- Delete file github.com/YourName/CNAME - Make a commit 
 - [Enable GitHub pages for the repository.](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/). This should create your GitHub Pages at  https://<span></span>yourname.github.io/threeuniverse/index.html *Note: Sometimes it might take couple of minutes to your GitHub pages to start to work*
 - Goto the above page. Roam around in the universe. Observe your coordinates on browser URL (say https://<span></span>yourname.github.io/threeuniverse/index.html#x:744&z:495)
 - Create a part at src/universe_parts. You can copy or refer to existing parts.
