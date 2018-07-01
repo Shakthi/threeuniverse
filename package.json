@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.2",
+    "hammerjs": "^2.0.8",
+    "mobile-detect": "^1.4.2",
     "node-snackbar": "^0.1.10",
     "seedrandom": "^2.4.3",
     "set-location-hash": "^0.3.0",

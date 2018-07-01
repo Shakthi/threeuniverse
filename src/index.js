@@ -1,10 +1,11 @@
 
 import * as THREE from 'three';
 import setLocationHash from 'set-location-hash';
+import MobileDetect from 'mobile-detect';
 
 import * as qualityController from './qualityController';
 import * as partsManager from './partsManager'
-import * as controller from './controller'
+import * as controller from './mobileController'
 import instructionPanel from './instructionPanel'
 import { datGUI } from './gui';
 
@@ -18,6 +19,9 @@ var camera, scene, renderer, controls;
 var isSetNeedToDisplay = true;
 var isFirstFrame = true;
 var updateUniverseAtframeCount = 0;
+var mobileDetect = new MobileDetect(window.navigator.userAgent);
+
+
 
 
 
@@ -86,16 +90,6 @@ function init(position) {
 
 
 
-    controls = controller.init(camera, position)
-    scene.add(controls.getObject());
-    camera.position.y = position.y;
-    instructionPanel.init(controls);
-
-    // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
-    // if (lastCameraRotation) {
-    //     let obj = JSON.parse(lastCameraRotation);
-    //     controls.getObject().rotation.set(obj._x,obj._y,obj._z);
-    // }
 
 
     var light = new THREE.AmbientLight(0x404040); // soft white light
@@ -113,6 +107,20 @@ function init(position) {
 
 
     window.addEventListener('resize', onWindowResize, false);
+
+
+
+    controls = controller.init(camera, position,renderer.domElement);
+    scene.add(controls.getObject());
+    camera.position.y = position.y;
+    instructionPanel.init(controls,mobileDetect);
+
+    // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
+    // if (lastCameraRotation) {
+    //     let obj = JSON.parse(lastCameraRotation);
+    //     controls.getObject().rotation.set(obj._x,obj._y,obj._z);
+    // }
+
 
 }
 
