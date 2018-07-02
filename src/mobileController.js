@@ -49,7 +49,7 @@ export function init(camera, position, element) {
     });
 
     hammer.on('swipe', function (ev) {
-
+        
         console.log(ev);
 
     });
