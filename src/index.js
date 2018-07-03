@@ -5,7 +5,9 @@ import MobileDetect from 'mobile-detect';
 
 import * as qualityController from './qualityController';
 import * as partsManager from './partsManager'
-import * as controller from './mobileController'
+import * as mobileController from './mobileController'
+import * as deskTopController from './controller'
+
 import instructionPanel from './instructionPanel'
 import { datGUI } from './gui';
 
@@ -20,7 +22,7 @@ var isSetNeedToDisplay = true;
 var isFirstFrame = true;
 var updateUniverseAtframeCount = 0;
 var mobileDetect = new MobileDetect(window.navigator.userAgent);
-
+var controller;
 
 
 
@@ -108,12 +110,19 @@ function init(position) {
 
     window.addEventListener('resize', onWindowResize, false);
 
+    if (mobileDetect.mobile()) {
+
+        controller = mobileController;
+    } else {
+        controller = deskTopController;
+    }
+
+    controls = controller.init(camera, position, renderer.domElement);
 
 
-    controls = controller.init(camera, position,renderer.domElement);
     scene.add(controls.getObject());
     camera.position.y = position.y;
-    instructionPanel.init(controls,mobileDetect);
+    instructionPanel.init(controls, mobileDetect);
 
     // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
     // if (lastCameraRotation) {
@@ -144,7 +153,7 @@ function animate() {
 
 
     if (controller.enabled())
-        isSetNeedToDisplay =  partsManager.delegateRequestAnimationFrame()||isSetNeedToDisplay ;
+        isSetNeedToDisplay = partsManager.delegateRequestAnimationFrame() || isSetNeedToDisplay;
 
     if (isSetNeedToDisplay) {
 
