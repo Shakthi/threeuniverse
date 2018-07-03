@@ -10,7 +10,7 @@ var isUpdate = false;
 var nitroBoost = false;
 
 var prevTime = performance.now();
-var velocity = new THREE.Vector3();
+var velocity = 0;
 var direction = new THREE.Vector3();
 var hammer = null;
 
@@ -52,19 +52,14 @@ export function init(camera, position, element) {
 
     hammer.on('swipeup', function (ev) {
 
-        let rot = controls.getObject().rotation.y;
-       velocity.y=Math.cos(rot)* 100;
-       velocity.x=Math.sin(rot)* 100;
+        velocity = 10;
+       
 
-        //console.log(velocity.y,velocity.x);
     });
 
     hammer.on('swipedown', function (ev) {
 
-        let rot = controls.getObject().rotation.y;
-        velocity.y=Math.cos(rot)* -100;
-        velocity.x=Math.sin(rot)* -100;
-       //console.log(velocity.y,velocity.x);
+        velocity = -10;
  
      });
  
@@ -106,11 +101,10 @@ export function update(onObject) {
 
     }
 
-    velocity.x = damp(velocity.x, delta * 10);
-    velocity.y = damp(velocity.y, delta * 10);
+    velocity = damp(velocity, delta * 10);
+    
     prevPosition = controls.getObject().position.clone();
-    controls.getObject().translateX(velocity.x * delta);
-    controls.getObject().translateZ(velocity.y * delta);
+    controls.getObject().translateZ(velocity * delta);
 
     let distace = prevPosition.distanceTo(controls.getObject().position);
 
@@ -122,7 +116,11 @@ export function update(onObject) {
 
     var isUpDateLocal = isUpdate;
     isUpdate = false;
+    if (isUpDateLocal) {
 
-    //console.log(isUpDateLocal);
+        console.log("postion",controls.getObject().position.x,controls.getObject().position.y,controls.getObject().position.z);
+        
+    }
+    
     return isUpDateLocal;
 }
