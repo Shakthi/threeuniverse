@@ -11,7 +11,7 @@ let panel = {
         var start_instruction = document.getElementById('start-instruction');
 
         if (md.mobile()) {
-            control_instruction.innerHTML = "Swipe up, down = Move</br>Swipe left, right = Look around";
+            control_instruction.innerHTML = "Pan = Move</br>Rotate = Look around";
             start_instruction.innerHTML = "Tap to roam; fork to edit "
 
 
