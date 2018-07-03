@@ -1,13 +1,7 @@
 import * as THREE from 'three';
 import Hammer from 'hammerjs'
 
-var moveForward = false;
-var moveBackward = false;
-var moveLeft = false;
-var moveRight = false;
-var canJump = false;
 var isUpdate = false;
-var nitroBoost = false;
 
 var prevTime = performance.now();
 var velocity = 0;
@@ -32,42 +26,46 @@ export function init(camera, position, element) {
     hammer = new Hammer(element);
     controls.getObject().translateX(position.x);
     controls.getObject().translateZ(position.z);
-    debugger;
     var originalRotation = 0;
 
-    hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 20 });
+    
+    hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 5 });
+    hammer.get('rotate').set({ enable: true });
 
-    hammer.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL ,velocity:0.1});
+
+
+    var lastdelta = 0;
+    var lastdeltaX = 0;
     hammer.on('panstart', function (ev) {
 
-        originalRotation = controls.getObject().rotation.y;
+        lastdelta = 0;
+        lastdeltaX = 0;
     });
-    hammer.on('pan', function (ev) {
+    hammer.on('rotatestart', function (ev) {
 
-        controls.getObject().rotation.y = originalRotation + ev.deltaX * 0.01;
+        originalRotation = ev.rotation;
+    });
+
+    hammer.on('rotatemove', function (ev) {
+        controls.getObject().rotation.y = (ev.rotation- originalRotation)*Math.PI/180;
         isUpdate = true;
     });
 
-    
 
-    hammer.on('swipeup', function (ev) {
+    hammer.on('pan', function (ev) {
 
-        velocity = 10;
-       
-
+        //controls.getObject().rotation.y = originalRotation + ev.deltaX * 0.01;
+        controls.getObject().translateZ(lastdelta - ev.deltaY);
+        controls.getObject().translateX(lastdeltaX - ev.deltaX);
+        
+        lastdelta = ev.deltaY;
+        lastdeltaX = ev.deltaX;
+        isUpdate = true;
     });
-
-    hammer.on('swipedown', function (ev) {
-
-        velocity = -10;
- 
-     });
- 
 
     return controls;
 }
 let prevPosition = new THREE.Vector3();
-let prevRocation = new THREE.Vector3();
 let clock = new THREE.Clock();
 export function update(onObject) {
 
@@ -102,7 +100,7 @@ export function update(onObject) {
     }
 
     velocity = damp(velocity, delta * 10);
-    
+
     prevPosition = controls.getObject().position.clone();
     controls.getObject().translateZ(velocity * delta);
 
@@ -116,11 +114,6 @@ export function update(onObject) {
 
     var isUpDateLocal = isUpdate;
     isUpdate = false;
-    if (isUpDateLocal) {
-
-        console.log("postion",controls.getObject().position.x,controls.getObject().position.y,controls.getObject().position.z);
-        
-    }
-    
+   
     return isUpDateLocal;
 }
