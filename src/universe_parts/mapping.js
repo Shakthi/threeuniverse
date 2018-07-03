@@ -47,7 +47,7 @@ defineThreeUniverse(function () {
         {
             position: { x: 542, y: 0, z: -1900 },
             description: "Simple cube ground",
-            url: "https://ashwithags.github.io/ThreeJSUniverse/src/universe_parts/simpleCube.js",
+            url: "https://ashwithags.github.io/threeuniverse/src/universe_parts/cube.js",
         }, {
             position: { x: 600, z: 100 },
             credits: "https://www.turbosquid.com/",
