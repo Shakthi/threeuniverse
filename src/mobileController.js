@@ -32,11 +32,12 @@ export function init(camera, position, element) {
     hammer = new Hammer(element);
     controls.getObject().translateX(position.x);
     controls.getObject().translateZ(position.z);
+    debugger;
     var originalRotation = 0;
 
-    hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL,threshold:20 });
+    hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 20 });
 
-    hammer.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+    hammer.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL ,velocity:0.1});
     hammer.on('panstart', function (ev) {
 
         originalRotation = controls.getObject().rotation.y;
@@ -45,108 +46,83 @@ export function init(camera, position, element) {
 
         controls.getObject().rotation.y = originalRotation + ev.deltaX * 0.01;
         isUpdate = true;
-
     });
 
-    hammer.on('swipe', function (ev) {
-        
-        console.log(ev);
+    
 
+    hammer.on('swipeup', function (ev) {
+
+        let rot = controls.getObject().rotation.y;
+       velocity.y=Math.cos(rot)* 100;
+       velocity.x=Math.sin(rot)* 100;
+
+        //console.log(velocity.y,velocity.x);
     });
-    var onKeyDown = function (event) {
 
+    hammer.on('swipedown', function (ev) {
 
-        switch (event.keyCode) {
-
-            case 38: // up
-            case 87: // w
-                moveForward = true;
-                break;
-
-            case 37: // left
-            case 65: // a
-                moveLeft = true; break;
-
-            case 66: // b
-            case 67: // c
-            case 86: // v
-            case 78: // v
-            case 77: // v
-                nitroBoost = true; break;
-
-            case 40: // down
-            case 83: // s
-                moveBackward = true;
-                break;
-
-            case 39: // right
-            case 68: // d
-                moveRight = true;
-                break;
-
-            case 32: // space
-                if (canJump === true) velocity.y += 350;
-                canJump = false;
-                break;
-
-        }
-
-    };
-
-
-    var onKeyUp = function (event) {
-
-        switch (event.keyCode) {
-
-            case 38: // up
-            case 87: // w
-                moveForward = false;
-                break;
-
-            case 37: // left
-            case 65: // a
-                moveLeft = false;
-                break;
-
-            case 40: // down
-            case 83: // s
-                moveBackward = false;
-                break;
-
-            case 39: // right
-            case 68: // d
-                moveRight = false;
-                break;
-
-
-            case 66: // b
-            case 67: // c
-            case 86: // v
-            case 78: // v
-            case 77: // v
-                nitroBoost = false; break;
-        }
-
-    };
-
-    document.addEventListener('keydown', onKeyDown, false);
-    document.addEventListener('keyup', onKeyUp, false);
+        let rot = controls.getObject().rotation.y;
+        velocity.y=Math.cos(rot)* -100;
+        velocity.x=Math.sin(rot)* -100;
+       //console.log(velocity.y,velocity.x);
+ 
+     });
+ 
 
     return controls;
-
 }
-
-
 let prevPosition = new THREE.Vector3();
 let prevRocation = new THREE.Vector3();
-
+let clock = new THREE.Clock();
 export function update(onObject) {
 
-    // if (!controls.enabled)
-    //     return;
+    if (!controls.enabled) {
+        if (clock.running) {
+            clock.stop();
+        }
+
+        return;
+    }
+    if (!clock.running) {
+        clock.start();
+    }
+    var delta = clock.getDelta();
+
+
+    function damp(original, delta) {
+        var ret = original;
+        if (ret > 0) {
+            ret -= delta;
+            if (ret < 0)
+                ret = 0;
+        }
+        else if (ret < 0) {
+            ret += delta;
+            if (ret > 0)
+                ret = 0;
+        }
+
+        return ret;
+
+    }
+
+    velocity.x = damp(velocity.x, delta * 10);
+    velocity.y = damp(velocity.y, delta * 10);
+    prevPosition = controls.getObject().position.clone();
+    controls.getObject().translateX(velocity.x * delta);
+    controls.getObject().translateZ(velocity.y * delta);
+
+    let distace = prevPosition.distanceTo(controls.getObject().position);
+
+
+    if (distace > Number.EPSILON)
+        isUpdate = true;
+
+
 
     var isUpDateLocal = isUpdate;
     isUpdate = false;
 
+    //console.log(isUpDateLocal);
     return isUpDateLocal;
 }

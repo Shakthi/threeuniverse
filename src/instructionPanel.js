@@ -19,6 +19,7 @@ let panel = {
 
                 instructions.style.display = 'none';
                 blocker.style.display = 'none';
+                controls.enabled = true;
 
                 
 

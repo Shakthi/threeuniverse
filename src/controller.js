@@ -88,12 +88,12 @@ export function init(camera, position) {
                 moveRight = false;
                 break;
 
-           
-                case 66: // b
-                case 67: // c
-                case 86: // v
-                case 78: // v
-                case 77: // v
+
+            case 66: // b
+            case 67: // c
+            case 86: // v
+            case 78: // v
+            case 77: // v
                 nitroBoost = false; break;
         }
 
@@ -112,8 +112,10 @@ let prevRocation = new THREE.Vector3();
 
 export function update(onObject) {
 
-    if(!controls.enabled)
+    if (!controls.enabled) {
+        prevTime = performance.now();
         return;
+    }
 
     var time = performance.now();
     var delta = (time - prevTime) / 1000;
@@ -136,7 +138,7 @@ export function update(onObject) {
     if (moveForward || moveBackward) velocity.z -= direction.z * mult * delta;
     if (moveLeft || moveRight) velocity.x -= direction.x * mult * delta;
 
-  
+
     controls.getObject().translateX(velocity.x * delta);
     controls.getObject().translateY(velocity.y * delta);
     controls.getObject().translateZ(velocity.z * delta);
