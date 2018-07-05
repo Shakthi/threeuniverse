@@ -36,13 +36,13 @@ defineThreeUniverse(function () {
          {
             position: { x: 200, z: -2500 },
             description: "IcosahedronGeometry",
-            url: "https://threeuniverse.org/src/universe_parts/sampleMeshModule.js"
+            url: "https://shakthi.github.io/PartUniverse/src/universe_parts/sampleMeshModule.js"
 
         },
         {
             position: { x: -1000, z: -2900 },
             description: "IcosahedronGeometry",
-            url: "https://threeuniverse.org/src/universe_parts/sampleMeshModule.js"
+            url: "https://shakthi.github.io/PartUniverse/src/universe_parts/sampleMeshModule.js"
         },
         {
             position: { x: 542, y: 0, z: -1900 },
