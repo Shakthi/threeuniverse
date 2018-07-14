@@ -3,15 +3,18 @@ var webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: {
+    universe:'./src/index.js',
+    parts:'./src/partBundle.js'
+  },
   output: {
     
 
     path: path.join(__dirname, 'build'),
-    filename: 'universe.bundle.js',
+    filename: '[name].bundle.js',
     publicPath: "/build/",
     libraryTarget: 'umd',
-    library: 'universe'
+    library: '[name]'
 
   }
 };
