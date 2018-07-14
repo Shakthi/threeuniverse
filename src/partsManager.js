@@ -7,7 +7,7 @@ import seedrandom from 'seedrandom'
 import { loadnExecute } from './partLoader';
 import { OnScreen } from './gui';
 
-let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom });
+let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom,loadnExecute });
 
 let maping = null;
 let loadedParts = [];
