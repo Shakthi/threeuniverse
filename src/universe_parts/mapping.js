@@ -31,7 +31,7 @@ defineThreeUniverse(function () {
             position: { x: 0, z: -2700, y: 0 },
             description: "Futeristic ground",
             radius: 1500,
-            url: "https://threeuniverse.org/src/universe_parts/futureGround.js",
+            url: "https://shakthi.github.io/PartUniverse/src/universe_parts/futureGround.js",
         },
          {
             position: { x: 200, z: -2500 },
