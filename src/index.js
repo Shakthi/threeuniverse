@@ -23,6 +23,7 @@ var isFirstFrame = true;
 var updateUniverseAtframeCount = 0;
 var mobileDetect = new MobileDetect(window.navigator.userAgent);
 var controller;
+var latestLoadedPartUrl;
 
 
 
@@ -130,6 +131,20 @@ function init(position) {
     //     controls.getObject().rotation.set(obj._x,obj._y,obj._z);
     // }
 
+    partsManager.setLoadUnloadCallBack((url) => {
+        latestLoadedPartUrl = url;
+        let gitreporoffset = url.indexOf(".github.io/threeuniverse/");
+        if (gitreporoffset != -1) {
+            
+
+            var username = url.substr(0, gitreporoffset);
+            username = username.replace("https://", "");
+            username = username.replace("http://", "");
+            document.getElementById('dynamicforkLink').href = `https://github.com/${username}/threeuniverse`;
+        }
+
+        ;
+    })
 
 }
 

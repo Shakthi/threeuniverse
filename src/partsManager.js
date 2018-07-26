@@ -13,6 +13,8 @@ let maping = null;
 let loadedParts = [];
 let local_part = "";
 
+let loadCallBack,unloadCallBack;
+
 export function initMaping() {
     return new Promise(function (resolve) {
         loadnExecute("src/universe_parts/mapping.js", "defineThreeUniverse", (construct) => {
@@ -80,6 +82,8 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                         scene.add(anchor);
                         item.object = anchor;
                         setNeedToDisplay();
+                        if(loadCallBack)
+                            loadCallBack(item.url);
                         OnScreen.log(`Loaded  ${item.url}`);
 
                     })
@@ -128,6 +132,8 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
         let distance = vectposition.distanceTo(position);
         if (distance - item.radius > far + 100 && item.object) {
             onUnloadPart(item);
+            if(unloadCallBack)
+                unloadCallBack(item.url);
             OnScreen.log(`Unloading  ${item.url}`);
             if (item.object.parent)
                 item.object.parent.remove(item.object);
@@ -202,3 +208,8 @@ export function delegateRequestAnimationFrame(delta) {
     return requestAnimationFrameList.length>0;
 }
 
+export function setLoadUnloadCallBack(aloadCallBack,aunloadCallBack){
+
+    loadCallBack = aloadCallBack;
+    unloadCallBack = aunloadCallBack;
+}
