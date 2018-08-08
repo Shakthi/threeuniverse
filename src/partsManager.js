@@ -1,13 +1,15 @@
 import * as THREE from 'three';
 import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
+import QueryTextureWrapper from './utils/QueryTextureWrapper'
 
 
 
 import { loadnExecute } from './partLoader';
 import { OnScreen } from './gui';
 
-let THREEEX = Object.assign({}, THREE, { OBJLoader2, seedrandom,loadnExecute });
+let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
+let UNIVERSE = Object.assign({},  {seedrandom,loadnExecute,QueryTextureWrapper }); 
 
 let maping = null;
 let loadedParts = [];
@@ -74,7 +76,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
 
 
-                    let promise = Promise.resolve(construct(THREEEX, options));
+                    let promise = Promise.resolve(construct(THREEEX, options,UNIVERSE));
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);
