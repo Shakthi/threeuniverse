@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 import QueryTextureWrapper from './utils/QueryTextureWrapper'
+import GroundRayCaster,{LocalGroundRayCasterGenerater} from './utils/GroundRayCaster'
+
+
 
 
 
@@ -9,7 +12,7 @@ import { loadnExecute } from './partLoader';
 import { OnScreen } from './gui';
 
 let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
-let UNIVERSE = Object.assign({},  {seedrandom,loadnExecute,QueryTextureWrapper }); 
+let UNIVERSE = Object.assign({},  {seedrandom,loadnExecute,QueryTextureWrapper,GroundRayCaster }); 
 
 let maping = null;
 let loadedParts = [];
@@ -50,6 +53,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                 item.radius = 0;
             }
             if (distance - item.radius < far) {
+
                 let anchor = new THREE.Object3D();
                 anchor.position.copy(vectposition);
                 let baseUrl = item.url.substring(0, item.url.indexOf("src/universe_parts"));
@@ -57,6 +61,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                     item.url = item.url.substring(local_part.length);
                     baseUrl = "";
                 }
+
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                     item.disposer = null;
                     let options = {
@@ -72,8 +77,11 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                             requestAnimationFrameList.push(item);
                         },
                         baseUrl: baseUrl,
+                        getPartPosition: ()=>vectposition,
+                        LocalGroundRayCaster: LocalGroundRayCasterGenerater(vectposition)
                     };
-
+                    
+                    
 
 
                     let promise = Promise.resolve(construct(THREEEX, options,UNIVERSE));

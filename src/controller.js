@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import GroundRayCaster from './utils/GroundRayCaster';
+
+const groundCaster = new GroundRayCaster();
 const PointerLockControls = require('three-pointerlock');
 
 var moveForward = false;
@@ -109,6 +112,7 @@ export function init(camera, position) {
 
 let prevPosition = new THREE.Vector3();
 let prevRocation = new THREE.Vector3();
+let oldHieght = 0;
 
 export function update(onObject) {
 
@@ -140,21 +144,27 @@ export function update(onObject) {
 
 
     controls.getObject().translateX(velocity.x * delta);
-    controls.getObject().translateY(velocity.y * delta);
     controls.getObject().translateZ(velocity.z * delta);
 
-    if (controls.getObject().position.y < 10) {
+    groundCaster.ray.origin.set(
+        controls.getObject().position.x,
+        300,
+        controls.getObject().position.z
+    );
 
-        velocity.y = 0;
-        controls.getObject().position.y = 10;
 
-        canJump = true;
 
-    }
+
+
 
     prevTime = time;
     let isUpdate = false;
     let distace = prevPosition.distanceTo(controls.getObject().position);
+    let distace2d = Math.sqrt(
+        (prevPosition.x -controls.getObject().position.x)*(prevPosition.x -controls.getObject().position.x)
+        +(prevPosition.z -controls.getObject().position.z)*(prevPosition.z -controls.getObject().position.z));
+
+
 
     let rotation = new THREE.Vector3().subVectors(new THREE.Vector3(controls.getObject().rotation.x,
         controls.getObject().rotation.y,
@@ -174,7 +184,24 @@ export function update(onObject) {
     prevPosition = controls.getObject().position.clone();
     prevRocation = controls.getObject().rotation.clone();
 
+    if (isUpdate) {
 
+        var intersectObject = groundCaster.intersectObjects();
+
+        if (intersectObject.length) {
+            
+            if (oldHieght) {
+                oldHieght =  ( intersectObject[0].point.y-oldHieght ) * distace2d*0.05+oldHieght ;   
+            }else{
+                oldHieght = intersectObject[0].point.y;
+            }
+             
+            controls.getObject().position.y = oldHieght;    
+        
+            
+
+        }
+    }
 
 
     return isUpdate;

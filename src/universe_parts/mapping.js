@@ -8,7 +8,8 @@ defineThreeUniverse(function () {
             position: { x: 0, z: 0 },
             description: "Grass ground with single texture",
             url: "https://threeuniverse.org/src/universe_parts/grassGround.js",
-            credits: "https://threejs.org/examples/#webgl_animation_cloth"
+            credits: "https://threejs.org/examples/#webgl_animation_cloth",
+            radius:14142.13562373095
         },
 
         {
