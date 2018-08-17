@@ -26,7 +26,7 @@ export default class GroundRayCaster extends THREE.Raycaster {
             function getResultIfPossible(resolve) {
 
                 let result = super_intersectObjects();
-                if (result) {
+                if (result.length) {
                     resolve(result);
                 }
                 else {
