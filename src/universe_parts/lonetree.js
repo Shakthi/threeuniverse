@@ -16,7 +16,6 @@ defineThreeUniverse(function (THREE,UNIVERSE,options) {
             })
             
                 var k = new options.LocalGroundRayCaster(new THREE.Vector3(0,100,0));
-                debugger;
                 var val= k.intersectObjectsOrWait();
                 val.then((result)=>{
 
