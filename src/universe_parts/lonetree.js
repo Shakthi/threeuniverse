@@ -1,5 +1,5 @@
 
-defineThreeUniverse(function (THREE,UNIVERSE,options) {
+defineThreeUniverse(function (THREE,UNIVERSE,part) {
 
     return new Promise(function (resolve) {
 
@@ -15,7 +15,7 @@ defineThreeUniverse(function (THREE,UNIVERSE,options) {
                 }
             })
             
-                var k = new options.LocalGroundRayCaster();
+                var k = new part.LocalGroundRayCaster();
 
                 var val= k.intersectObjectsOrWait();
                 val.then((result)=>{

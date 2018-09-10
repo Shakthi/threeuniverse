@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 import QueryTextureWrapper from './utils/QueryTextureWrapper'
+import TextureLoader from './utils/TextureLoader'
 import GroundRayCaster,{LocalGroundRayCasterGenerater} from './utils/GroundRayCaster'
 
 
@@ -12,7 +13,7 @@ import { loadnExecute } from './partLoader';
 import { OnScreen } from './gui';
 
 let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
-let UNIVERSE = Object.assign({},  {seedrandom,loadnExecute,QueryTextureWrapper,GroundRayCaster }); 
+let UNIVERSE = Object.assign({},  {seedrandom,loadnExecute,QueryTextureWrapper,GroundRayCaster,TextureLoader }); 
 
 let maping = null;
 let loadedParts = [];

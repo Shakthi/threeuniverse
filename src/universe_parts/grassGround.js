@@ -1,54 +1,69 @@
 
-defineThreeUniverse(function (THREE,UNIVERSE,options) {
+defineThreeUniverse(function (THREE, UNIVERSE, options) {
     var queryTexture = null;
     return new Promise(function (resolve, reject) {
 
-        var groundTexture = new THREE.TextureLoader().load(options.baseUrl + 'resource/grasslight-big.jpg');
-        var texture = new THREE.TextureLoader().load('resource/texture/sECkYCE.png', (heightmap) => {
-            queryTexture = new UNIVERSE.QueryTextureWrapper(heightmap);
-
-        });
-
-
+        var groundTexturePromise = UNIVERSE.TextureLoader.load(options.baseUrl + 'resource/grasslight-big.jpg');
+        var queryTexturePromise = UNIVERSE.TextureLoader.load('resource/texture/sECkYCE.png').then(heightmap => new UNIVERSE.QueryTextureWrapper(heightmap));
         var geometry = new THREE.PlaneBufferGeometry(20000, 20000, 100, 100);
-        var material = new THREE.MeshPhongMaterial({
-            displacementMap: texture,
-            displacementScale: 400,
-            displacementBias: -35,
-            //aoMap: texture,
-            side: THREE.DoubleSide,
-            map: groundTexture
-        });
-        mesh = new THREE.Mesh(geometry, material);
-        mesh.rotation.x = - Math.PI / 2;
 
-        var originalRaycast = mesh.raycast;
-        mesh.raycast = function (raycaster, intersects) {
-            originalRaycast.call(mesh, raycaster, intersects);
-            var thisobjectsIntersects = intersects.filter((element) => element.object == mesh);
-            if (thisobjectsIntersects.length) {
-                let uv = new THREE.Vector2().copy(thisobjectsIntersects[0].uv);
-                texture.transformUv(uv);
-                var hightpixel = queryTexture.getPixelAtUv(uv.x, uv.y);
-                var hightVal = hightpixel.r / 255 * material.displacementScale + material.displacementBias;
-            }
 
-            thisobjectsIntersects.forEach(element => {
-                element.point.y = hightVal;
+        Promise.all([groundTexturePromise, queryTexturePromise]).then((textures) => {
 
+            var groundTexture = textures[0];
+            groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+            groundTexture.repeat.set(25, 25);
+            groundTexture.anisotropy = 16;
+
+            var queryTexture= textures[1];
+            var displacementMap = queryTexture.texture;
+
+
+            var material = new THREE.MeshPhongMaterial({
+                displacementMap: displacementMap,
+                displacementScale: 400,
+                displacementBias: -35,
+                side: THREE.DoubleSide,
+                map: groundTexture
             });
 
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.rotation.x = - Math.PI / 2;
+            mesh.receiveShadow = true;
+
+            
+
+            var originalRaycast = mesh.raycast;
+            mesh.raycast = function (raycaster, intersects) {
+                originalRaycast.call(mesh, raycaster, intersects);
+                var thisobjectsIntersects = intersects.filter((element) => element.object == mesh);
+                if (thisobjectsIntersects.length) {
+                    let uv = new THREE.Vector2().copy(thisobjectsIntersects[0].uv);
+                    displacementMap.transformUv(uv);
+                    var hightpixel = queryTexture.getPixelAtUv(uv.x, uv.y);
+                    var hightVal = hightpixel.r / 255 * material.displacementScale + material.displacementBias;
+                }
+
+                thisobjectsIntersects.forEach(element => {
+                    element.point.y = hightVal;
+
+                });
 
 
-        }
 
-        UNIVERSE.GroundRayCaster.addGround(mesh);
-        resolve(mesh);
+            }
+
+            UNIVERSE.GroundRayCaster.addGround(mesh);
+            resolve(mesh);
+
+        });
+
+
+
+
+
 
         //                 mesh.position.set(0,-100,0);
-        groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
-        groundTexture.repeat.set(25, 25);
-        groundTexture.anisotropy = 16;
 
         //UNIVERSE.groundCaster;
 
@@ -82,7 +97,6 @@ defineThreeUniverse(function (THREE,UNIVERSE,options) {
         //     // mesh.position.y = - 250;
         //    // mesh.position.y = - 100;
         //     mesh.rotation.x = - Math.PI / 2;
-        mesh.receiveShadow = true;
 
     });
 
