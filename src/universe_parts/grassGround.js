@@ -1,5 +1,5 @@
 
-defineThreeUniverse(function (THREE, options, UNIVERSE) {
+defineThreeUniverse(function (THREE,UNIVERSE,options) {
     var queryTexture = null;
     return new Promise(function (resolve, reject) {
 

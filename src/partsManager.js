@@ -64,7 +64,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                     item.disposer = null;
-                    let options = {
+                    let PARTOption = {
                         dispose: function (disposer) {
                             item.disposer = disposer;
                         },
@@ -84,7 +84,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                     
 
 
-                    let promise = Promise.resolve(construct(THREEEX, options,UNIVERSE));
+                    let promise = Promise.resolve(construct(THREEEX, UNIVERSE,PARTOption));
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);
