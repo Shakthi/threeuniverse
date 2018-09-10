@@ -54,13 +54,15 @@ export default class GroundRayCaster extends THREE.Raycaster {
     static addGround(ground) {
         
         requestAnimationFrame(() => {
-            if (!GroundRayCaster.prototype.addGroundObjectsCallBack)
+            setTimeout(() => {
+                if (!GroundRayCaster.prototype.addGroundObjectsCallBack)
                 GroundRayCaster.prototype.addGroundObjectsCallBack = [];
 
             GroundRayCaster.prototype.groundObjects.push(ground);
             GroundRayCaster.prototype.addGroundObjectsCallBack.forEach(element => {
                 element(ground);
             });
+            }, 100);
         });
 
 
