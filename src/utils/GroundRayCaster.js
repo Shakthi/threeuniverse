@@ -19,14 +19,15 @@ export default class GroundRayCaster extends THREE.Raycaster {
 
     intersectObjectsOrWait() {
 
-        var super_intersectObjects = () => super.intersectObjects(this.groundObjects, false);
+        var _this= this;
 
         return new Promise(function (resolve, reject) { //TODO have a cancellable promise
 
             function getResultIfPossible(resolve) {
 
-                let result = super_intersectObjects();
+                let result = _this.intersectObjects();
                 if (result.length) {
+                    console.log(result);
                     resolve(result);
                 }
                 else {
@@ -54,15 +55,14 @@ export default class GroundRayCaster extends THREE.Raycaster {
     static addGround(ground) {
         
         requestAnimationFrame(() => {
-            setTimeout(() => {
-                if (!GroundRayCaster.prototype.addGroundObjectsCallBack)
+            if (!GroundRayCaster.prototype.addGroundObjectsCallBack)
                 GroundRayCaster.prototype.addGroundObjectsCallBack = [];
 
             GroundRayCaster.prototype.groundObjects.push(ground);
             GroundRayCaster.prototype.addGroundObjectsCallBack.forEach(element => {
                 element(ground);
             });
-            }, 100);
+            GroundRayCaster.prototype.addGroundObjectsCallBack=[];
         });
 
 
