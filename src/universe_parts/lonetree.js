@@ -1,5 +1,5 @@
 
-defineThreeUniverse(function (THREE,UNIVERSE,options) {
+defineThreeUniverse(function (THREE,UNIVERSE,SPACE) {
 
     return new Promise(function (resolve) {
 
@@ -16,7 +16,7 @@ defineThreeUniverse(function (THREE,UNIVERSE,options) {
             })
 
 
-            options.GetGroundHitPoint(new THREE.Vector3(0,1000,0)).then(result=>{
+            SPACE.GetGroundHitPoint(new THREE.Vector3(0,1000,0)).then(result=>{
                 console.log("tree",result[0].point.y)
                 event.detail.loaderRootNode.position.y = result[0].point.y;
                 resolve(event.detail.loaderRootNode);
@@ -38,10 +38,10 @@ defineThreeUniverse(function (THREE,UNIVERSE,options) {
         var onLoadMtl = function (materials) {
             objLoader.setMaterials(materials);
             objLoader.setLogging(true, true);
-            objLoader.load(options.baseUrl+'resource/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
+            objLoader.load(SPACE.baseUrl+'resource/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
 
 
         };
-        objLoader.loadMtl(options.baseUrl+'resource/Tree_obj/Tree.mtl', null, onLoadMtl);
+        objLoader.loadMtl(SPACE.baseUrl+'resource/Tree_obj/Tree.mtl', null, onLoadMtl);
     });
 });

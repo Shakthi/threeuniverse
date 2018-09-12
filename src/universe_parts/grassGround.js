@@ -4,7 +4,7 @@ defineThreeUniverse(function (THREE, UNIVERSE, options) {
     return new Promise(function (resolve, reject) {
 
         var groundTexturePromise = UNIVERSE.TextureLoader.load(options.baseUrl + 'resource/grasslight-big.jpg');
-        var queryTexturePromise = UNIVERSE.TextureLoader.load('resource/texture/sECkYCE.png').then(heightmap => new UNIVERSE.QueryTextureWrapper(heightmap));
+        var queryTexturePromise = UNIVERSE.TextureLoader.load(options.baseUrl +'resource/texture/sECkYCE.png').then(heightmap => new UNIVERSE.QueryTextureWrapper(heightmap));
         var geometry = new THREE.PlaneBufferGeometry(20000, 20000, 100, 100);
 
 
@@ -22,7 +22,7 @@ defineThreeUniverse(function (THREE, UNIVERSE, options) {
             var material = new THREE.MeshPhongMaterial({
                 displacementMap: displacementMap,
                 displacementScale: 400,
-                displacementBias: -35,
+                displacementBias: -100,
                 side: THREE.DoubleSide,
                 map: groundTexture
             });
@@ -62,41 +62,6 @@ defineThreeUniverse(function (THREE, UNIVERSE, options) {
 
 
 
-
-        //                 mesh.position.set(0,-100,0);
-
-        //UNIVERSE.groundCaster;
-
-        //     var loader = new THREE.TextureLoader();
-        //     var mesh = null;
-
-        //     var groundTexture = loader.load(options.baseUrl+'resource/grasslight-big.jpg',
-        //         () => {resolve(mesh)},
-        //         null,
-        //         (error) => {reject(error)}
-        //     );
-
-        //     // var displacementMap  = loader.load(options.baseUrl+'resource/texture/sECkYCE.png',()=>{
-        //     //     debugger;
-        //     // });
-
-        //     var displacementMap  = loader.load('https://threejs.org/examples/models/obj/ninja/displacement.jpg',()=>{
-
-        //     });
-
-
-        //     // groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
-        //     // groundTexture.repeat.set(25, 25);
-        //     // groundTexture.anisotropy = 16;
-
-        //     var groundMaterial = new THREE.MeshStandardMaterial({ map: groundTexture,
-        //         displacementMap:displacementMap,displacementScale:10,
-        //     	displacementBias:  10,  });
-
-        //     var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000,100,100), groundMaterial);
-        //     // mesh.position.y = - 250;
-        //    // mesh.position.y = - 100;
-        //     mesh.rotation.x = - Math.PI / 2;
 
     });
 
