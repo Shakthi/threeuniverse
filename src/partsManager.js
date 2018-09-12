@@ -1,22 +1,11 @@
 import * as THREE from 'three';
-import OBJLoader2 from './extern/OBJLoader2'
-import seedrandom from 'seedrandom'
-import QueryTextureWrapper from './utils/QueryTextureWrapper'
-import TextureLoader from './utils/TextureLoader'
-import  {  GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 
-
-
+import { THREEEX, UNIVERSE, GeneratePartOptions } from './PartProvider';
 
 
 import { loadnExecute } from './partLoader';
 import { OnScreen } from './gui';
 
-let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
-let UNIVERSE = Object.assign({}, {
-    seedrandom, loadnExecute, QueryTextureWrapper,
-     TextureLoader,GetGroundHitPoint, GroundManager,
-});
 
 let maping = null;
 let loadedParts = [];
@@ -68,28 +57,7 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
                 loadnExecute(item.url, "defineThreeUniverse", (construct) => {
                     item.disposer = null;
-                    let PARTOption = {
-                        dispose: function (disposer) {
-                            item.disposer = disposer;
-                        },
-                        onCameraUpdate: function (fun) {
-                            item.onCameraUpdate = fun;
-                            cameraUpdateList.push(item);
-                        },
-                        requestAnimationFrame: function (fun) {
-                            item.requestAnimationFrame = fun;
-                            requestAnimationFrameList.push(item);
-                        },
-                        baseUrl: baseUrl,
-                        getPartPosition: () => vectposition,
-                        GetGroundHitPoint:function (position) {
-                            return UNIVERSE.GetGroundHitPoint(new THREE.Vector3().addVectors(position,vectposition))
-                        }
-                    };
-
-
-
-
+                    let PARTOption = GeneratePartOptions(item, baseUrl, vectposition);
                     let promise = Promise.resolve(construct(THREEEX, UNIVERSE, PARTOption));
                     promise.then((result) => {
                         anchor.add(result);
@@ -114,6 +82,13 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
 
 
 }
+
+
+
+
+import { cameraUpdateList, requestAnimationFrameList } from './PartProvider';
+
+
 
 function onUnloadPart(part) {
 
@@ -149,28 +124,6 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
                 item.object.parent.remove(item.object);
             if (item.disposer) {
                 item.disposer();
-            } else {
-                item.object.traverse(function (obj) {
-                    if (obj.isMesh) {
-                        if (obj.geometry)
-                            obj.geometry.dispose();
-                        if (obj.material instanceof Array) {
-                            obj.material.forEach(item => {
-                                if (item.map) {
-                                    item.map.dispose();
-                                }
-                                item.dispose();
-                            });
-                        } else {
-                            if (obj.material.map)
-                                obj.material.map.dispose();
-                            obj.material.dispose();
-                        }
-
-
-                    }
-
-                });
             }
             unloaded.push(item);
         } else {
@@ -180,8 +133,6 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
                 box.getBoundingSphere(sphere);
                 OnScreen.log(`${item.url} Eestimated radius: ${sphere.radius.toFixed(1)}`);
                 item.radius = sphere.radius;
-
-
             }
         }
 
@@ -200,7 +151,6 @@ export function unloadPartsAt(position, far, scene, setNeedToDisplay) {
 
 }
 
-let cameraUpdateList = [];
 export function updateloadedParts(position) {
     for (let i = cameraUpdateList.length - 1; i > -1; i--) {
         cameraUpdateList[i].onCameraUpdate(position);
@@ -208,7 +158,6 @@ export function updateloadedParts(position) {
     }
 }
 
-let requestAnimationFrameList = [];
 
 export function delegateRequestAnimationFrame(delta) {
     for (var i = requestAnimationFrameList.length - 1; i > -1; i--) {
