@@ -53,7 +53,7 @@ defineThreeUniverse(function (THREE, UNIVERSE, options) {
 
             }
 
-            UNIVERSE.GroundRayCaster.addGround(mesh);
+            UNIVERSE.GroundManager.add(mesh);
             resolve(mesh);
 
         });

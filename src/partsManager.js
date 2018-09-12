@@ -3,7 +3,7 @@ import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 import QueryTextureWrapper from './utils/QueryTextureWrapper'
 import TextureLoader from './utils/TextureLoader'
-import GroundRayCaster,{LocalGroundRayCasterGenerater} from './utils/GroundRayCaster'
+import GroundRayCaster, { LocalGroundRayCasterGenerater, GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 
 
 
@@ -13,7 +13,10 @@ import { loadnExecute } from './partLoader';
 import { OnScreen } from './gui';
 
 let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
-let UNIVERSE = Object.assign({},  {seedrandom,loadnExecute,QueryTextureWrapper,GroundRayCaster,TextureLoader }); 
+let UNIVERSE = Object.assign({}, {
+    seedrandom, loadnExecute, QueryTextureWrapper,
+    GroundRayCaster, TextureLoader,GetGroundHitPoint, GroundManager,
+});
 
 let maping = null;
 let loadedParts = [];
@@ -78,14 +81,17 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                             requestAnimationFrameList.push(item);
                         },
                         baseUrl: baseUrl,
-                        getPartPosition: ()=>vectposition,
-                        LocalGroundRayCaster: LocalGroundRayCasterGenerater(vectposition)
+                        getPartPosition: () => vectposition,
+                        LocalGroundRayCaster: LocalGroundRayCasterGenerater(vectposition),
+                        GetGroundHitPoint:function (position) {
+                            return UNIVERSE.GetGroundHitPoint(new THREE.Vector3().addVectors(position,vectposition))
+                        }
                     };
-                    
-                    
 
 
-                    let promise = Promise.resolve(construct(THREEEX, UNIVERSE,PARTOption));
+
+
+                    let promise = Promise.resolve(construct(THREEEX, UNIVERSE, PARTOption));
                     promise.then((result) => {
                         anchor.add(result);
                         scene.add(anchor);
@@ -210,6 +216,6 @@ export function delegateRequestAnimationFrame(delta) {
         requestAnimationFrameList[i].requestAnimationFrame(delta);
 
     }
-    return requestAnimationFrameList.length>0;
+    return requestAnimationFrameList.length > 0;
 }
 

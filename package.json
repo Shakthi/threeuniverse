@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.2",
+    "events": "^3.0.0",
     "hammerjs": "^2.0.8",
     "mobile-detect": "^1.4.2",
     "node-snackbar": "^0.1.10",
