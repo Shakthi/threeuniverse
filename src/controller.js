@@ -1,7 +1,6 @@
 import * as THREE from 'three';
-import GroundRayCaster from './utils/GroundRayCaster';
+import {GroundRaycast} from './utils/GroundRayCaster';
 
-const groundCaster = new GroundRayCaster();
 const PointerLockControls = require('three-pointerlock');
 
 var moveForward = false;
@@ -146,11 +145,6 @@ export function update(onObject) {
     controls.getObject().translateX(velocity.x * delta);
     controls.getObject().translateZ(velocity.z * delta);
 
-    groundCaster.ray.origin.set(
-        controls.getObject().position.x,
-        300,
-        controls.getObject().position.z
-    );
 
 
 
@@ -186,8 +180,9 @@ export function update(onObject) {
 
     if (isUpdate) {
 
-        var intersectObject = groundCaster.intersectObjects();
-
+        var intersectObject = GroundRaycast(new THREE.Vector3().addVectors(controls.getObject().position,
+        new THREE.Vector3(0,300,0)));
+    
         if (intersectObject.length) {
             
             if (oldHieght) {

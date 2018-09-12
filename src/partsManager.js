@@ -3,7 +3,7 @@ import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 import QueryTextureWrapper from './utils/QueryTextureWrapper'
 import TextureLoader from './utils/TextureLoader'
-import GroundRayCaster, { LocalGroundRayCasterGenerater, GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
+import  { LocalGroundRayCasterGenerater, GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 
 
 
@@ -82,7 +82,6 @@ export function loadPartsAt(position, far, scene, setNeedToDisplay) {
                         },
                         baseUrl: baseUrl,
                         getPartPosition: () => vectposition,
-                        LocalGroundRayCaster: LocalGroundRayCasterGenerater(vectposition),
                         GetGroundHitPoint:function (position) {
                             return UNIVERSE.GetGroundHitPoint(new THREE.Vector3().addVectors(position,vectposition))
                         }
