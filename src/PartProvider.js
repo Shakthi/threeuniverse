@@ -1,12 +1,13 @@
 import * as THREE from 'three';
-import OBJLoader2 from './extern/OBJLoader2'
 import seedrandom from 'seedrandom'
 import QueryTextureWrapper from './utils/QueryTextureWrapper'
 import TextureLoader from './utils/TextureLoader'
 import { loadnExecute } from './partLoader';
+import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
 
 
-export let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
+
+export let THREEEX = Object.assign({}, THREE,MTLLoader, OBJLoader);
 
 import  {  GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 

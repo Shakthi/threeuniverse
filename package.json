@@ -31,6 +31,7 @@
     "set-location-hash": "^0.3.0",
     "simple-load-script": "^1.0.2",
     "three": "^0.93.0",
+    "three-obj-mtl-loader": "^1.0.3",
     "three-pointerlock": "0.0.2"
   }
 }

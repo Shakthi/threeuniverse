@@ -3,13 +3,15 @@ defineThreeUniverse(function (THREE,UNIVERSE,SPACE) {
 
     return new Promise(function (resolve) {
 
-        var objLoader = new THREE.OBJLoader2();
-        var callbackOnLoad = function (event) {
+        var objLoader = new THREE.OBJLoader();
+        var mtlLoader = new THREE.MTLLoader()
+        var callbackOnLoad = function (objnode) {
            
-            event.detail.loaderRootNode.rotateX(- 90 * THREE.Math.DEG2RAD);
-            event.detail.loaderRootNode.scale.set(40, 40, 40);
+            debugger;
+            objnode.rotateX(- 90 * THREE.Math.DEG2RAD);
+            objnode.scale.set(40, 40, 40);
 
-            event.detail.loaderRootNode.traverse(object => {
+            objnode.traverse(object => {
                 if (object.isMesh) {
                     object.castShadow = true;
                 }
@@ -18,8 +20,8 @@ defineThreeUniverse(function (THREE,UNIVERSE,SPACE) {
 
             SPACE.GetGroundHitPoint(new THREE.Vector3(0,1000,0)).then(result=>{
                 console.log("tree",result[0].point.y)
-                event.detail.loaderRootNode.position.y = result[0].point.y;
-                resolve(event.detail.loaderRootNode);
+                objnode.position.y = result[0].point.y;
+                resolve(objnode);
             })
             
               
@@ -35,13 +37,16 @@ defineThreeUniverse(function (THREE,UNIVERSE,SPACE) {
             
 
         };
+
+
         var onLoadMtl = function (materials) {
+            //materials.preLoad();
             objLoader.setMaterials(materials);
-            objLoader.setLogging(true, true);
-            objLoader.load(SPACE.baseUrl+'resource/Tree_obj/Tree.obj', callbackOnLoad, null, null, null, false);
+            objLoader.load(SPACE.baseUrl+'resource/Tree_obj/Tree.obj', callbackOnLoad);
 
 
         };
-        objLoader.loadMtl(SPACE.baseUrl+'resource/Tree_obj/Tree.mtl', null, onLoadMtl);
+        mtlLoader.setPath(SPACE.baseUrl+'resource/Tree_obj/')
+        mtlLoader.load('Tree.mtl', onLoadMtl);
     });
 });
