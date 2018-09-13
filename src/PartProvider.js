@@ -21,12 +21,13 @@ function castShadow(object){
 
 function loadMTLNObject(baseUrl, mtl, obj) {
     var objLoader = new THREEEX.OBJLoader2();
+    objLoader.setLogging(false, false);
+
 
     return new Promise((resolve, reject) => {
         objLoader.loadMtl(baseUrl + mtl, null, function (materials) {
 
             objLoader.setMaterials(materials);
-            objLoader.setLogging(false, false);
             objLoader.load(baseUrl + obj, (event) => {
                 resolve(event.detail.loaderRootNode);
             }, null, reject, null, false);
