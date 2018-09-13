@@ -10,8 +10,35 @@ export let THREEEX = Object.assign({}, THREE, { OBJLoader2 });
 
 import  {  GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 
+function castShadow(object){
+    object.traverse(object => {
+        if (object.isMesh) {
+            object.castShadow = true;
+        }
+
+    })
+}
+
+function loadMTLNObject(baseUrl, mtl, obj) {
+    var objLoader = new THREEEX.OBJLoader2();
+
+    return new Promise((resolve, reject) => {
+        objLoader.loadMtl(baseUrl + mtl, null, function (materials) {
+
+            objLoader.setMaterials(materials);
+            objLoader.setLogging(false, false);
+            objLoader.load(baseUrl + obj, (event) => {
+                resolve(event.detail.loaderRootNode);
+            }, null, reject, null, false);
+
+        });
+    });
+
+}
+
+
 export let UNIVERSE = Object.assign({}, {
-    seedrandom, loadnExecute, QueryTextureWrapper,
+    seedrandom,loadMTLNObject,castShadow, loadnExecute, QueryTextureWrapper,
      TextureLoader,GetGroundHitPoint, GroundManager,
 });
 
@@ -62,6 +89,10 @@ export function GeneratePartOptions(item,baseUrl,vectposition){
         getPartPosition: () => vectposition,
         GetGroundHitPoint:function (position) {
             return UNIVERSE.GetGroundHitPoint(new THREE.Vector3().addVectors(position,vectposition))
+        },
+        loadMTLNObject:function (mtlpath) {
+            let objectpath = mtlpath.replace(/\.obj$/,".mtl");
+            return UNIVERSE.loadMTLNObject(baseUrl,objectpath,mtlpath);
         }
     };
 
