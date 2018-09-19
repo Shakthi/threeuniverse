@@ -186,13 +186,12 @@ export function update(onObject) {
         if (intersectObject.length) {
             
             if (oldHieght) {
-                oldHieght =  ( intersectObject[0].point.y-oldHieght ) * distace2d*0.05+oldHieght ;   
+                oldHieght =  ( intersectObject[0].point.y-oldHieght ) * (distace2d>20?20:distace2d) *0.05+oldHieght ;   
             }else{
                 oldHieght = intersectObject[0].point.y;
             }
              
             controls.getObject().position.y = oldHieght;    
-        
             
 
         }
