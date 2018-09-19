@@ -29,8 +29,8 @@ function loadMTLNObject(baseUrl, mtl, obj) {
     return new Promise((resolve, reject) => {
         
         mtlLoader.setTexturePath(baseUrl+path.dirname(mtl)+"/");
-        mtlLoader.load(mtl,  function (materials) {
-
+        mtlLoader.load(baseUrl+mtl,  function (materials) {
+            materials.crossOrigin="anonymous";    
             objLoader.setMaterials(materials);
             objLoader.load(baseUrl + obj, (objnode) => {
                 resolve(objnode);

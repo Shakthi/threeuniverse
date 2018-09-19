@@ -39,7 +39,7 @@ defineThreeUniverse(function (THREE,UNIVERSE,SPACE) {
 
 
         var onLoadMtl = function (materials) {
-            //materials.preLoad();
+            materials.crossOrigin="anonymous";    
             objLoader.setMaterials(materials);
             objLoader.load(SPACE.baseUrl+'resource/Tree_obj/Tree.obj', callbackOnLoad);
 
