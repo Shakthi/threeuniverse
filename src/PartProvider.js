@@ -4,6 +4,7 @@ import QueryTextureWrapper from './utils/QueryTextureWrapper'
 import TextureLoader from './utils/TextureLoader'
 import { loadnExecute } from './partLoader';
 import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
+import path from 'path'
 
 
 
@@ -26,7 +27,9 @@ function loadMTLNObject(baseUrl, mtl, obj) {
     var mtlLoader = new THREEEX.MTLLoader()
 
     return new Promise((resolve, reject) => {
-        mtlLoader.load(baseUrl + mtl,  function (materials) {
+        
+        mtlLoader.setTexturePath(baseUrl+path.dirname(mtl)+"/");
+        mtlLoader.load(mtl,  function (materials) {
 
             objLoader.setMaterials(materials);
             objLoader.load(baseUrl + obj, (objnode) => {
