@@ -7,7 +7,6 @@ defineThreeUniverse(function (THREE,UNIVERSE,SPACE) {
         var mtlLoader = new THREE.MTLLoader()
         var callbackOnLoad = function (objnode) {
            
-            debugger;
             objnode.rotateX(- 90 * THREE.Math.DEG2RAD);
             objnode.scale.set(40, 40, 40);
 

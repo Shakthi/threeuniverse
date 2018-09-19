@@ -21,19 +21,19 @@ function castShadow(object){
 }
 
 function loadMTLNObject(baseUrl, mtl, obj) {
-    var objLoader = new THREEEX.OBJLoader2();
-    objLoader.setLogging(false, false);
-
+    
+    var objLoader = new THREEEX.OBJLoader();
+    var mtlLoader = new THREEEX.MTLLoader()
 
     return new Promise((resolve, reject) => {
-        objLoader.loadMtl(baseUrl + mtl, null, function (materials) {
+        mtlLoader.load(baseUrl + mtl,  function (materials) {
 
             objLoader.setMaterials(materials);
-            objLoader.load(baseUrl + obj, (event) => {
-                resolve(event.detail.loaderRootNode);
-            }, null, reject, null, false);
+            objLoader.load(baseUrl + obj, (objnode) => {
+                resolve(objnode);
+            }, null, reject);
 
-        });
+        },null,reject);
     });
 
 }
