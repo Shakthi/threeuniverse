@@ -193,6 +193,7 @@ export function update(onObject) {
              
             controls.getObject().position.y = oldHieght;    
             
+            console.log(controls.getObject().position);
 
         }
     }
