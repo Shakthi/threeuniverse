@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
     "build": "webpack -p",
-    "push": "webpack-cli -p;git add build/universe.bundle.js; git commit -m 'updated build ';git push"
+    "push": "webpack-cli -p;git add build/universe.bundle.js; ./versioning.bash; git add build/version.js;  git commit -m 'updated build ';git push"
   },
   "keywords": [
     "threejs",
