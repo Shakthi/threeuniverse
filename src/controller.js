@@ -65,8 +65,7 @@ export function init(camera, position) {
                 break;
 
             case 32: // space
-                if (canJump === true) velocity.y += 350;
-                canJump = false;
+                nitroBoost = true;
                 break;
 
         }
@@ -104,6 +103,7 @@ export function init(camera, position) {
             case 86: // v
             case 78: // v
             case 77: // v
+            case 32: // v
                 nitroBoost = false; break;
         }
 
