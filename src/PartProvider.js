@@ -30,10 +30,47 @@ function loadMTLNObject(baseUrl, mtl, obj) {
         
         mtlLoader.setTexturePath(baseUrl+path.dirname(mtl)+"/");
         mtlLoader.load(baseUrl+mtl,  function (materials) {
-            materials.crossOrigin="anonymous";    
+            materials.crossOrigin="anonymous";
+            let oldloadTexture = materials.loadTexture;
+            let textureCount=0;
+            let textureloadComplted=null;
+            materials.loadTexture = function myloadTexture(url,mapping,onLoad,onProgress,onFail) {
+
+                // texturePromiseArray.push (new Promise((resolve,reject)=>{
+                    
+                // }));
+
+                textureCount++;
+
+                function myOnload(params) {
+                    textureCount--;
+                    if(textureCount==0 && textureloadComplted){
+                        textureloadComplted();
+                    }
+                    if(onLoad)
+                    onLoad(params);
+                }
+                function myOnFail(params) {
+                    reject("failed to load texture");
+                    if(onFail)
+                    onFail(params);
+                }
+                
+                return oldloadTexture.call(materials,url,mapping,myOnload,onProgress,myOnFail)
+            }
+
             objLoader.setMaterials(materials);
             objLoader.load(baseUrl + obj, (objnode) => {
-                resolve(objnode);
+                setTimeout(() => {
+                    if(textureCount>0){
+                        textureloadComplted = ()=>resolve(objnode);
+                    }else{
+                        resolve(objnode);
+                    }
+                        
+                    
+                }, 0);
+                
             }, null, reject);
 
         },null,reject);
