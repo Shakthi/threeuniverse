@@ -7,7 +7,6 @@ var moveForward = false;
 var moveBackward = false;
 var moveLeft = false;
 var moveRight = false;
-var canJump = false;
 var nitroBoost = false;
 
 var prevTime = performance.now();
@@ -32,7 +31,7 @@ export function init(camera, position) {
     controls = new PointerLockControls(camera);
     controls.getObject().translateX(position.x);
     controls.getObject().translateZ(position.z);
-    controls.getObject().position.y = position.y;
+    controls.getObject().position.y = oldHieght= position.y;
     var onKeyDown = function (event) {
 
 

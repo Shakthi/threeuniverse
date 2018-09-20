@@ -31,17 +31,31 @@ var controller;
 
 partsManager.initMaping().then(lmap => {
     let initialPosition = new THREE.Vector3();
-    let offset = new THREE.Vector3(0, 30, 0);
+    let cameraoffset = new THREE.Vector3(0, 50, 0);
     let urlHashPosition = getLocationHashObject();
 
     if (urlHashPosition) {
-        initialPosition.set(offset.x + urlHashPosition.x, offset.y + urlHashPosition.y, offset.z + urlHashPosition.z);
+        initialPosition.set(urlHashPosition.x, urlHashPosition.y, urlHashPosition.z);
+        if (initialPosition.y == 0) {
+            let lastCameraPosition = localStorage.getItem("lastCameraPosition");
+            if (lastCameraPosition && lastCameraPosition !== "undefined") {
+                let obj = JSON.parse(lastCameraPosition);
+                let lastCamPos = new THREE.Vector3(obj.x, obj.y, obj.z);
+                let initialPosition2d = new THREE.Vector2(initialPosition.x,initialPosition.z);
+                let lastCamPos2d = new THREE.Vector2(lastCamPos.x,lastCamPos.z);
+
+                if(lastCamPos2d.distanceTo(initialPosition2d)<10)
+                    initialPosition.y =  lastCamPos.y;
+
+            }
+        }
+
     } else {
 
         let lastCameraPosition = localStorage.getItem("lastCameraPosition");
         if (lastCameraPosition && lastCameraPosition !== "undefined") {
             let obj = JSON.parse(lastCameraPosition);
-            initialPosition.set(offset.x + obj.x, offset.y , offset.z + obj.z);
+            initialPosition.set(obj.x, obj.y, obj.z);
         } else {
             let local_position = lmap.local_position;
             ['x', 'y', 'z'].forEach(key => {
@@ -53,13 +67,13 @@ partsManager.initMaping().then(lmap => {
             });
 
             if (local_position) {
-                initialPosition.set(offset.x + local_position.x, offset.y + local_position.y, offset.z + local_position.z);
+                initialPosition.set(local_position.x, local_position.y, local_position.z);
             }
 
         }
 
     }
-    init(initialPosition);
+    init(initialPosition, cameraoffset);
     animate();
 
 
@@ -69,7 +83,7 @@ partsManager.initMaping().then(lmap => {
 
 
 
-function init(position) {
+function init(position, cameraOffset) {
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
     scene = new THREE.Scene();
@@ -121,7 +135,7 @@ function init(position) {
 
 
     scene.add(controls.getObject());
-    camera.position.y = position.y;
+    camera.position.y = cameraOffset.y;
     instructionPanel.init(controls, mobileDetect);
 
     // let lastCameraRotation =localStorage.getItem("lastCameraRotation");
