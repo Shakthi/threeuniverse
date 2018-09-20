@@ -41,7 +41,7 @@ partsManager.initMaping().then(lmap => {
         let lastCameraPosition = localStorage.getItem("lastCameraPosition");
         if (lastCameraPosition && lastCameraPosition !== "undefined") {
             let obj = JSON.parse(lastCameraPosition);
-            initialPosition.set(offset.x + obj.x, offset.y + obj.y, offset.z + obj.z);
+            initialPosition.set(offset.x + obj.x, offset.y , offset.z + obj.z);
         } else {
             let local_position = lmap.local_position;
             ['x', 'y', 'z'].forEach(key => {
