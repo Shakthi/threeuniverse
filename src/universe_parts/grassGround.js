@@ -24,7 +24,9 @@ defineThreeUniverse(function (THREE, UNIVERSE, options) {
                 displacementScale: 400,
                 displacementBias: -100,
                 side: THREE.DoubleSide,
-                map: groundTexture
+                map: groundTexture,
+                aoMap:displacementMap,
+                aoMapIntensity:1 
             });
 
             var mesh = new THREE.Mesh(geometry, material);

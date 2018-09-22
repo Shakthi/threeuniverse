@@ -46,7 +46,7 @@ defineThreeUniverse(function () {
             url: "https://shakthi.github.io/PartUniverse/src/universe_parts/sampleMeshModule.js"
         },
         {
-            position: { x: 542, y: 0, z: -1900 },
+            position: { x: 542, y: 100, z: -1900 },
             description: "Simple cube ground",
             url: "https://ashwithags.github.io/threeuniverse/src/universe_parts/cube.js",
         }, {
