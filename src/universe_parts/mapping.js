@@ -34,6 +34,12 @@ defineThreeUniverse(function () {
             radius: 1500,
             url: "https://shakthi.github.io/PartUniverse/src/universe_parts/futureGround.js",
         },
+        {
+            position: { x: -3800,z:3000 },
+            description: "Small artificil pond",
+            radius: 1500,
+            url: "https://threeuniverse.github.io/webgl-water/src/universe_parts/pond.js",
+        },
          {
             position: { x: 200, z: -2500 },
             description: "IcosahedronGeometry",
