@@ -183,10 +183,10 @@ export function update(onObject) {
     prevRocation = controls.getObject().rotation.clone();
 
     if (isUpdate) {
-
         var intersectObject = GroundRaycast(new THREE.Vector3().addVectors(controls.getObject().position,
             new THREE.Vector3(0, 300, 0)));
-
+        
+        intersectObject = intersectObject.sort((a,b)=>b.point.y-a.point.y);    
         if (intersectObject.length) {
 
             oldHieght = (intersectObject[0].point.y - oldHieght) * (distace2d > 20 ? 20 : distace2d) * 0.025 + oldHieght;
