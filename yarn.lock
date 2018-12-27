@@ -5140,9 +5140,10 @@ three-pointerlock@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/three-pointerlock/-/three-pointerlock-0.0.2.tgz#e07ae063081102c6135a198d61c7078afe6f4f37"
 
-three@^0.93.0:
-  version "0.93.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.93.0.tgz#3fd6c367ef4554abbb6e16ad69936283e895c123"
+three@^0.99.0:
+  version "0.99.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.99.0.tgz#65711fda7a16501da83948121437d824df1fea19"
+  integrity sha512-DmNNq6H6nRGaqxScJ8x7v5VjdtDZR72oTVwDdKbB2BYNFxCkAoo9vdFAznEsMu9YzTV2yFvbVs7qHRzvJZzTIg==
 
 through2@^2.0.0:
   version "2.0.3"
