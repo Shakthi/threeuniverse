@@ -4,11 +4,12 @@ import QueryTextureWrapper from './utils/QueryTextureWrapper'
 import TextureLoader from './utils/TextureLoader'
 import { loadnExecute } from './partLoader';
 import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
+import ShaderToyMaterial from 'three-shadertoy-material'
 import path from 'path'
 
 
 
-export let THREEEX = Object.assign({}, THREE,MTLLoader, OBJLoader);
+export let THREEEX = Object.assign({}, THREE,MTLLoader, OBJLoader,ShaderToyMaterial);
 
 import  {  GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 

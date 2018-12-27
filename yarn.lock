@@ -5140,6 +5140,11 @@ three-pointerlock@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/three-pointerlock/-/three-pointerlock-0.0.2.tgz#e07ae063081102c6135a198d61c7078afe6f4f37"
 
+three-shadertoy-material@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/three-shadertoy-material/-/three-shadertoy-material-1.2.6.tgz#3775c7dc681518766f414664eaa9b1549c82cf29"
+  integrity sha512-k8+5Xw5OChVDVPbvulfr/YKMgV7YYQBdyczCSHbpTJOgcwfzt48oHqIXH/iMJCM47dBfhUWS4yHw6bFN3Nc2fg==
+
 three@^0.99.0:
   version "0.99.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.99.0.tgz#65711fda7a16501da83948121437d824df1fea19"
