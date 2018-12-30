@@ -9,8 +9,8 @@ import path from 'path'
 
 
 
-export let THREEEX = Object.assign({}, THREE,MTLLoader, OBJLoader,ShaderToyMaterial);
 
+export let THREEEX = Object.assign({}, THREE,MTLLoader, OBJLoader,{ShaderToyMaterial:ShaderToyMaterial});
 import  {  GroundManager, GetGroundHitPoint } from './utils/GroundRayCaster'
 
 function castShadow(object){
