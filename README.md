@@ -12,6 +12,13 @@ Please checkout the current progress at
 - https://threeuniverse.org/#x:-174&z:-1894 - Future world
 - https://threeuniverse.org/#x:-4178&z:2522&y - Tiny pond under construction
 
+#Local testing
+
+```sh
+yarn install
+yarn start
+```
+
 *Quick contribution guide:*
 
 It is super easy to create your structure in this universe. 
