@@ -18,6 +18,7 @@ Please checkout the current progress at
 yarn install
 yarn start
 ```
+Which will create a server at http://localhost:8080/
 
 *Quick contribution guide:*
 
