@@ -10,7 +10,7 @@ Please checkout the current progress at
 - https://threeuniverse.org/#x:1088&z:556 - Village life
 - https://threeuniverse.org/#x:83&z:483 - Small forest 
 - https://threeuniverse.org/#x:-174&z:-1894 - Future world
-- https://threeuniverse.org/#x:-4178&z:2522&y - Tiny pond under construction
+- https://threeuniverse.org/#x:-4178&z:2522 - Tiny pond
 
 # Local testing
 
