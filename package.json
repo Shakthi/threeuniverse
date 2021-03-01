@@ -32,7 +32,7 @@
     "seedrandom": "^2.4.3",
     "set-location-hash": "^0.3.0",
     "simple-load-script": "^1.0.2",
-    "three": "^0.99.0",
+    "three": "^0.125.0",
     "three-obj-mtl-loader": "Shakthi/three-obj-mtl-loader#master",
     "three-pointerlock": "0.0.2",
     "three-shadertoy-material": "^1.2.6"
